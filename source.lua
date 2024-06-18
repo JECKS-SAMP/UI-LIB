@@ -1,4 +1,4 @@
-local Kavo = {}
+local Lex = {}
 
 local tween = game:GetService("TweenService")
 local tweeninfo = TweenInfo.new
@@ -7,7 +7,7 @@ local run = game:GetService("RunService")
 
 local Utility = {}
 local Objects = {}
-function Kavo:DraggingEnabled(frame, parent)
+function Lex:DraggingEnabled(frame, parent)
         
     parent = parent or frame
     
@@ -126,7 +126,7 @@ local SettingsT = {
 
 }
 
-local Name = "KavoConfig.JSON"
+local Name = "NeuroHUB.json"
 
 pcall(function()
 
@@ -139,7 +139,7 @@ end)
 
 local LibName = tostring(math.random(1, 100))..tostring(math.random(1,50))..tostring(math.random(1, 100))
 
-function Kavo:ToggleUI()
+function Lex:ToggleUI()
     if game.CoreGui[LibName].Enabled then
         game.CoreGui[LibName].Enabled = false
     else
@@ -147,7 +147,7 @@ function Kavo:ToggleUI()
     end
 end
 
-function Kavo.CreateLib(kavName, themeList)
+function Lex.CreateLib(UltimateName, themeList)
     if not themeList then
         themeList = themes
     end
@@ -185,10 +185,10 @@ function Kavo.CreateLib(kavName, themeList)
 
     themeList = themeList or {}
     local selectedTab 
-    kavName = kavName or "Library"
-    table.insert(Kavo, kavName)
+    UltimateName = UltimateName or "Library"
+    table.insert(Lex, UltimateName)
     for i,v in pairs(game.CoreGui:GetChildren()) do
-        if v:IsA("ScreenGui") and v.Name == kavName then
+        if v:IsA("ScreenGui") and v.Name == UltimateName then
             v:Destroy()
         end
     end
@@ -211,7 +211,7 @@ function Kavo.CreateLib(kavName, themeList)
 
     local blurFrame = Instance.new("Frame")
 
-    Kavo:DraggingEnabled(MainHeader, Main)
+    Lex:DraggingEnabled(MainHeader, Main)
 
     blurFrame.Name = "blurFrame"
     blurFrame.Parent = pages
@@ -264,7 +264,7 @@ function Kavo.CreateLib(kavName, themeList)
     title.Size = UDim2.new(0, 204, 0, 8)
     title.Font = Enum.Font.Gotham
     title.RichText = true
-    title.Text = kavName
+    title.Text = UltimateName
     title.TextColor3 = Color3.fromRGB(245, 245, 245)
     title.TextSize = 16.000
     title.TextXAlignment = Enum.TextXAlignment.Left
@@ -352,7 +352,7 @@ function Kavo.CreateLib(kavName, themeList)
         end
     end)()
 
-    function Kavo:ChangeColor(prope,color)
+    function Lex:ChangeColor(prope,color)
         if prope == "Background" then
             themeList.Background = color
         elseif prope == "SchemeColor" then
@@ -2642,4 +2642,4 @@ function Kavo.CreateLib(kavName, themeList)
     end  
     return Tabs
 end
-return Kavo
+return Lex
