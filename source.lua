@@ -1,4 +1,4 @@
-local Lex = {}
+local Kavo = {}
 
 local tween = game:GetService("TweenService")
 local tweeninfo = TweenInfo.new
@@ -7,7 +7,7 @@ local run = game:GetService("RunService")
 
 local Utility = {}
 local Objects = {}
-function Lex:DraggingEnabled(frame, parent)
+function Kavo:DraggingEnabled(frame, parent)
         
     parent = parent or frame
     
@@ -16,7 +16,7 @@ function Lex:DraggingEnabled(frame, parent)
     local dragInput, mousePos, framePos
 
     frame.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
             dragging = true
             mousePos = input.Position
             framePos = parent.Position
@@ -30,7 +30,7 @@ function Lex:DraggingEnabled(frame, parent)
     end)
 
     frame.InputChanged:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseMovement then
+        if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
             dragInput = input
         end
     end)
@@ -57,11 +57,11 @@ local themes = {
 }
 local themeStyles = {
     DarkTheme = {
-        SchemeColor = Color3.fromRGB(64, 64, 64),
+        SchemeColor = Color3.fromRGB(0, 45, 207),
         Background = Color3.fromRGB(0, 0, 0),
         Header = Color3.fromRGB(0, 0, 0),
         TextColor = Color3.fromRGB(255,255,255),
-        ElementColor = Color3.fromRGB(20, 20, 20)
+        ElementColor = Color3.fromRGB(0, 0, 0)
     },
     LightTheme = {
         SchemeColor = Color3.fromRGB(150, 150, 150),
@@ -126,8 +126,10 @@ local SettingsT = {
 
 }
 
-local Name = "NeuroHUB.json"
-
+local Name = "KavoConfig.JSON"
+if not isfile("KavoConfig.JSON") then
+   writefile(Name, "{}") 
+end
 pcall(function()
 
 if not pcall(function() readfile(Name) end) then
@@ -139,7 +141,7 @@ end)
 
 local LibName = tostring(math.random(1, 100))..tostring(math.random(1,50))..tostring(math.random(1, 100))
 
-function Lex:ToggleUI()
+function Kavo:ToggleUI()
     if game.CoreGui[LibName].Enabled then
         game.CoreGui[LibName].Enabled = false
     else
@@ -147,7 +149,7 @@ function Lex:ToggleUI()
     end
 end
 
-function Lex.CreateLib(UltimateName, themeList)
+function Kavo.CreateLib(kavName, themeList)
     if not themeList then
         themeList = themes
     end
@@ -185,10 +187,10 @@ function Lex.CreateLib(UltimateName, themeList)
 
     themeList = themeList or {}
     local selectedTab 
-    UltimateName = UltimateName or "Library"
-    table.insert(Lex, UltimateName)
+    kavName = kavName or "Library"
+    table.insert(Kavo, kavName)
     for i,v in pairs(game.CoreGui:GetChildren()) do
-        if v:IsA("ScreenGui") and v.Name == UltimateName then
+        if v:IsA("ScreenGui") and v.Name == kavName then
             v:Destroy()
         end
     end
@@ -211,7 +213,7 @@ function Lex.CreateLib(UltimateName, themeList)
 
     local blurFrame = Instance.new("Frame")
 
-    Lex:DraggingEnabled(MainHeader, Main)
+    Kavo:DraggingEnabled(MainHeader, Main)
 
     blurFrame.Name = "blurFrame"
     blurFrame.Parent = pages
@@ -228,6 +230,7 @@ function Lex.CreateLib(UltimateName, themeList)
     ScreenGui.ResetOnSpawn = false
 
     Main.Name = "Main"
+    Main.Active = true
     Main.Parent = ScreenGui
     Main.BackgroundColor3 = themeList.Background
     Main.ClipsDescendants = true
@@ -264,32 +267,10 @@ function Lex.CreateLib(UltimateName, themeList)
     title.Size = UDim2.new(0, 204, 0, 8)
     title.Font = Enum.Font.Gotham
     title.RichText = true
-    title.Text = UltimateName
+    title.Text = kavName
     title.TextColor3 = Color3.fromRGB(245, 245, 245)
     title.TextSize = 16.000
     title.TextXAlignment = Enum.TextXAlignment.Left
-
-    close.Name = "close"
-    close.Parent = MainHeader
-    close.BackgroundTransparency = 1.000
-    close.Position = UDim2.new(0.949999988, 0, 0.137999997, 0)
-    close.Size = UDim2.new(0, 21, 0, 21)
-    close.ZIndex = 2
-    close.Image = "rbxassetid://3926305904"
-    close.ImageRectOffset = Vector2.new(284, 4)
-    close.ImageRectSize = Vector2.new(24, 24)
-    close.MouseButton1Click:Connect(function()
-        game.TweenService:Create(close, TweenInfo.new(0.1, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut), {
-            ImageTransparency = 1
-        }):Play()
-        wait()
-        game.TweenService:Create(Main, TweenInfo.new(0.1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
-			Size = UDim2.new(0,0,0,0),
-			Position = UDim2.new(0, Main.AbsolutePosition.X + (Main.AbsoluteSize.X / 2), 0, Main.AbsolutePosition.Y + (Main.AbsoluteSize.Y / 2))
-		}):Play()
-        wait(1)
-        ScreenGui:Destroy()
-    end)
 
     MainSide.Name = "MainSide"
     MainSide.Parent = Main
@@ -352,7 +333,7 @@ function Lex.CreateLib(UltimateName, themeList)
         end
     end)()
 
-    function Lex:ChangeColor(prope,color)
+    function Kavo:ChangeColor(prope,color)
         if prope == "Background" then
             themeList.Background = color
         elseif prope == "SchemeColor" then
@@ -1419,7 +1400,7 @@ function Lex.CreateLib(UltimateName, themeList)
                             sliderDrag:TweenSize(UDim2.new(0, math.clamp(mouse.X - sliderDrag.AbsolutePosition.X, 0, 149), 0, 6), "InOut", "Linear", 0.05, true)
                         end)
                         releaseconnection = uis.InputEnded:Connect(function(Mouse)
-                            if Mouse.UserInputType == Enum.UserInputType.MouseButton1 then
+                            if Mouse.UserInputType == Enum.UserInputType.MouseButton1 or Mouse.UserInputType == Enum.UserInputType.Touch then
                                 Value = math.floor((((tonumber(maxvalue) - tonumber(minvalue)) / 149) * sliderDrag.AbsoluteSize.X) + tonumber(minvalue))
                                 pcall(function()
                                     callback(Value)
@@ -2642,4 +2623,4 @@ function Lex.CreateLib(UltimateName, themeList)
     end  
     return Tabs
 end
-return Lex
+return Kavo
