@@ -1,16 +1,19 @@
 print("https://discord.gg/FUKFyqzyqg")
 
-game.StarterGui:SetCore("SendNotification", {
-	Icon = "rbxassetid://18107430987";
-	Title = "ULTIMATE    ", 
-	Text = "Loading Ui..."
-})
-
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
+wait(2)
 
+game.StarterGui:SetCore("SendNotification", {
+	Icon = "rbxassetid://18107430965";
+	Title = "ULTIMATE    ", 
+	Text = "Loading Ui...",
+	Duration = 15,
+})
 wait(15)
 
-local LexUi = Library.CreateLib("Ultimate Hub | Blox Fruit Script", "Sentinel")
+print("Load Succesfully")
+
+local LexUi = Library.CreateLib("Ultimate Hub | Blox Fruit Script", "DarkTheme")
 
 local Info = LexUi:NewTab("Information")
 local Main = LexUi:NewTab("Main")
@@ -29,7 +32,7 @@ Section:NewLabel("Email : Yoo02@proton.me")
 local Section = Main:NewSection("Script")
 Section:NewButton("TIKTOK", "Click Me To Open Tiktok", function()
 
-    loadstring(game:HttpGet("https://tiktok.com/@lexyy.9k"))()
+    setclipboard("https://tiktok.com/@lexyy.9k")
 
 end)
 
