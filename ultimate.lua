@@ -14,18 +14,21 @@ OrionLib:MakeNotification({
 
 local Window = OrionLib:MakeWindow({Name = "ULTIMATE HUB | BLOX FRUITS", HidePremium = false, SaveConfig = true, ConfigFolder = "UltimateHuB", IntroEnabled = true})
 
---Info Tab--
+-- Tab Info
 local InfoTab = Window:MakeTab({
 	Name = "Info",
 	Icon = "rbxassetid://6026568198",
 	PremiumOnly = false
-)}
-
-local InfoSection = InfoTab:AddSection({
-	Name = "Code Made In Indonesia."
 })
 
---Main Tab--
+local InfoSection = InfoTab:AddSection({
+	Name = "Credits and Version"
+})
+
+InfoTab:AddLabel("Script By: @Lucifer")
+InfoTab:AddLabel("Script Version: v2")
+
+-- Tab Main
 local MainTab = Window:MakeTab({
 	Name = "Main",
 	Icon = "rbxassetid://6026568198",
@@ -33,21 +36,51 @@ local MainTab = Window:MakeTab({
 })
 
 local MainSection = MainTab:AddSection({
-	Name = "Main"
+	Name = "Main Features"
 })
 
---Player Tab--
-local PlayerTab = Window:MakeTab({
-	Name = "Player",
-	Icon = "rbxassetid://4483345998",
-	PremiumOnly = false
+MainTab:AddButton({
+	Name = "Example Button",
+	Callback = function()
+      		print("Main Button pressed")
+  	end    
 })
 
-local PlayerSection = PlayerTab:AddSection({
-	Name = "Player"
+MainTab:AddToggle({
+	Name = "Example Toggle",
+	Default = false,
+	Callback = function(Value)
+		print("Main Toggle value: " .. tostring(Value))
+	end    
 })
 
---Settings Tab--
+MainTab:AddSlider({
+	Name = "Example Slider",
+	Min = 0,
+	Max = 100,
+	Default = 50,
+	Color = Color3.fromRGB(255, 255, 255),
+	Increment = 1,
+	ValueName = "value",
+	Callback = function(Value)
+		print("Main Slider value: " .. tostring(Value))
+	end    
+})
+
+MainTab:AddLabel("Main Label")
+
+MainTab:AddParagraph("Main Paragraph","This is an example paragraph in the Main tab.")
+
+MainTab:AddTextbox({
+	Name = "Main Textbox",
+	Default = "default text",
+	TextDisappear = true,
+	Callback = function(Value)
+		print("Main Textbox input: " .. Value)
+	end	  
+})
+
+-- Tab Settings
 local SettingsTab = Window:MakeTab({
 	Name = "Settings",
 	Icon = "rbxassetid://4483345998",
@@ -55,14 +88,46 @@ local SettingsTab = Window:MakeTab({
 })
 
 local SettingsSection = SettingsTab:AddSection({
-	Name = "Settings"
+	Name = "Configuration"
 })
 
-SettingsSection:AddButton({
-	Name = "Destroy UI",
+SettingsTab:AddButton({
+	Name = "Reset Settings",
 	Callback = function()
-        OrionLib:Destroy()
+      		print("Settings reset")
   	end    
 })
 
-OrionLib:Init()
+SettingsTab:AddToggle({
+	Name = "Enable Feature",
+	Default = false,
+	Callback = function(Value)
+		print("Settings Toggle value: " .. tostring(Value))
+	end    
+})
+
+SettingsTab:AddSlider({
+	Name = "Volume Control",
+	Min = 0,
+	Max = 100,
+	Default = 50,
+	Color = Color3.fromRGB(255, 255, 255),
+	Increment = 1,
+	ValueName = "volume",
+	Callback = function(Value)
+		print("Settings Slider value: " .. tostring(Value))
+	end    
+})
+
+SettingsTab:AddLabel("Settings Label")
+
+SettingsTab:AddParagraph("Settings Paragraph","This is an example paragraph in the Settings tab.")
+
+SettingsTab:AddTextbox({
+	Name = "Settings Textbox",
+	Default = "default setting",
+	TextDisappear = true,
+	Callback = function(Value)
+		print("Settings Textbox input: " .. Value)
+	end	  
+})
