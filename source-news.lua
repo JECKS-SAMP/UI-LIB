@@ -695,15 +695,6 @@ function OrionLib:MakeWindow(WindowConfig)
 	local function LoadSequence()
 		MainWindow.Visible = false
 
-		local BlurBackground = Instance.new("ImageLabel")
-		BlurBackground.Parent = Orion
-		BlurBackground.AnchorPoint = Vector2.new(0.5, 0.5)
-		BlurBackground.Position = UDim2.new(0.5, 0, 0.5, 0)
-		BlurBackground.Size = UDim2.new(1, 0, 1, 0)
-		BlurBackground.BackgroundTransparency = 1
-		BlurBackground.Image = "rbxassetid://3887014957"
-		BlurBackground.ImageTransparency = 1
-
 		local LoadSequenceLogo = SetProps(MakeElement("Image", WindowConfig.IntroIcon), {
 			Parent = Orion,
 			AnchorPoint = Vector2.new(0.5, 0.5),
@@ -723,7 +714,6 @@ function OrionLib:MakeWindow(WindowConfig)
 			TextTransparency = 1
 		})
 		
-		TweenService:Create(BlurBackground, TweenInfo.new(.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {ImageTransparency = 0}):Play()
 		TweenService:Create(LoadSequenceLogo, TweenInfo.new(.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {ImageTransparency = 0, Position = UDim2.new(0.5, 0, 0.5, 0)}):Play()
 		wait(0.8)
 		TweenService:Create(LoadSequenceLogo, TweenInfo.new(.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Position = UDim2.new(0.5, -(LoadSequenceText.TextBounds.X/2), 0.5, 0)}):Play()
@@ -733,7 +723,6 @@ function OrionLib:MakeWindow(WindowConfig)
 		TweenService:Create(LoadSequenceText, TweenInfo.new(.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextTransparency = 1}):Play()
 		
 		MainWindow.Visible = true
-		BlurBackground:Destroy()
 		LoadSequenceLogo:Destroy()
 		LoadSequenceText:Destroy()
 	end 
