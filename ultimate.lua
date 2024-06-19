@@ -867,9 +867,9 @@ MainTab:AddToggle({
 	end,
 })
 
--- Tab TP
+-- Tab Tp
 local TpTab = Window:MakeTab({
-	Name = "Main",
+	Name = "Teleport",
 	Icon = "rbxassetid://6026568198",
 	PremiumOnly = false
 })
@@ -878,7 +878,10 @@ local TpSection = TpTab:AddSection({
 	Name = "Teleport Menu"
 })
 
-TpTab:AddDropdown({
+local previousValue = nil
+local dropdown
+
+dropdown = TpTab:AddDropdown({
 	Name = "Select Island",
 	Options = {
 		"Pirate Island",
@@ -898,6 +901,25 @@ TpTab:AddDropdown({
 		"Magma Village"
 	},
 	Callback = function(value)
+		if value == previousValue then
+			-- Stop teleport
+			game:GetService("TweenService"):Pause()
+			
+			-- Make stop notification
+			OrionLib:MakeNotification({
+				Name = "ULTIMATE HUB",
+				Content = "Teleport Stopped!",
+				Image = "rbxassetid://18107430965",
+				Time = 5
+			})
+			
+			-- Reset dropdown selection
+			dropdown:Set(nil)
+			previousValue = nil
+			return
+		end
+		
+		previousValue = value
 		local tweenService, tweenInfo = game:GetService("TweenService"), TweenInfo.new(45, Enum.EasingStyle.Linear)
 		local targetPosition
 
@@ -935,6 +957,14 @@ TpTab:AddDropdown({
 
 		if targetPosition then
 			tweenService:Create(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart, tweenInfo, {CFrame = targetPosition}):Play()
+			
+			-- Make teleport notification
+			OrionLib:MakeNotification({
+				Name = "ULTIMATE HUB",
+				Content = "Teleporting to " .. value .. "!",
+				Image = "rbxassetid://18107430965",
+				Time = 5
+			})
 		end
 	end,
 })
