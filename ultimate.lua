@@ -1,112 +1,99 @@
-print("https://discord.gg/FUKFyqzyqg")
-
-local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source-new.lua", true))()
+print("ULTIMATE LOADING...")
+print("Discord Server: https://discord.gg/FUKFyqzyqg")
+print("-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-")
 wait(2)
 
-game.StarterGui:SetCore("SendNotification", {
-	Icon = "rbxassetid://18107430965";
-	Title = "ULTIMATE    ", 
-	Text = "Loading Ui...",
-	Duration = 15,
+local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/JECKS-SAMP/UI-LIB/main/source-new.lua')))()
+
+OrionLib:MakeNotification({
+	Name = "ULTIMATE HUB",
+	Content = "Loading UI...",
+	Image = "rbxassetid://18107430965",
+	Time = 5
 })
 
-local LexUi = Library.new("ULTIMATE HUB", "v0.2", 18107430965)
-LexUi.LoadingScreen()
-wait(15)
 
-print("Load Succesfully")
+local Window = OrionLib:MakeWindow({Name = "ULTIMATE HUB | BLOX FRUITS", HidePremium = false, SaveConfig = true, ConfigFolder = "UltimateHuB", IntroEnabled = true})
 
-local Info = LexUi:Tab("Information", 6022668945)
-local Main = LexUi:Tab("Main", 18115283037)
-local Setting = LexUi:Tab("Farm Settings", 18115285301)
+--Main Tab--
+local MainTab = Window:MakeTab({
+	Name = "Main",
+	Icon = "rbxassetid://6026568198",
+	PremiumOnly = false
+})
 
-local Folder = Info.Folder("Options", "A bunch of options you can use")
-Folder.Button("Button", function()
-	print("Button Clicked")
-end)
-Folder.Switch("Switch", function(Status)
-	print("Switch Triggered: " .. tostring(Status))
-end)
-Folder.Switch("Switch", function(Status)
-	print("Switch Triggered: " .. tostring(Status))
-end)
-Folder.Toggle("Toggle", function(Status)
-	print("Toggle Triggered: " .. tostring(Status))
-end)
-Folder.Toggle("Toggle", function(Status)
-	print("Toggle Triggered: " .. tostring(Status))
-end)
-Folder.TextBox("Textbox", "Placeholder", function(Text)
-	print("TextBox Triggered: " .. Text)
-end)
+local MainSection = MainTab:AddSection({
+	Name = "Main"
+})
 
-Info.Folder("Lipsum Expanded", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur eu mollis urna, quis feugiat tellus. Integer ut ligula sodales, sodales ipsum ut, imperdiet ipsum. In aliquet quam et venenatis pulvinar. Nullam fermentum porta felis sit amet interdum. Sed tristique fringilla mollis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nam quis tempus mauris, nec ultrices metus. Suspendisse mi urna, accumsan at nisi a, tristique porta libero. Integer lobortis elementum lacus cursus consectetur. Morbi mauris ante, posuere at malesuada et, tristique non ipsum. Proin vitae purus pretium, convallis est vitae, dignissim leo. Praesent nec felis vitae.")
-local Cheat = Info.Cheat("Options", "A bunch of options you can use", function(Status)
-print("Cheat Triggered: " .. tostring(Status))
-end)
-Cheat.Button("Button", function()
-print("Button Clicked")
-end)
-Cheat.Switch("Switch", function(Status)
-print("Switch Triggered: " .. tostring(Status))
-end)
-Cheat.Toggle("Toggle", function(Status)
-print("Toggle Triggered: " .. tostring(Status))
-end)
-Cheat.Toggle("Toggle", function(Status)
-print("Toggle Triggered: " .. tostring(Status))
-end)
-Cheat.TextBox("Textbox", "Placeholder", function(Text)
-print("TextBox Triggered: " .. Text)
-end)
+MainSelection:AddTextbox({
+	Name = "LEXSAMP",
+	Default = "default box input",
+	TextDisappear = true,
+	Callback = function(Value)
+		print(Value)
+	end	  
+})
 
-Info.Cheat("Lipsum Expanded", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur eu mollis urna, quis feugiat tellus. Integer ut ligula sodales, sodales ipsum ut, imperdiet ipsum. In aliquet quam et venenatis pulvinar. Nullam fermentum porta felis sit amet interdum. Sed tristique fringilla mollis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nam quis tempus mauris, nec ultrices metus. Suspendisse mi urna, accumsan at nisi a, tristique porta libero. Integer lobortis elementum lacus cursus consectetur. Morbi mauris ante, posuere at malesuada et, tristique non ipsum. Proin vitae purus pretium, convallis est vitae, dignissim leo. Praesent nec felis vitae.", function(Status)
-print("Cheat Triggered: " .. tostring(Status))
-end)
+MainSection:AddSlider({
+	Name = "Walkspeed",
+	Min = 16,
+	Max = 100,
+	Default = 5,
+	Color = Color3.fromRGB(255,255,255),
+	Increment = 1,
+	ValueName = "Walkspeed",
+	Callback = function(Value)
+        game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = Value
+	end    
+})
 
-local Folder = Main.Folder("Options", "A bunch of options you can use")
-Folder.Button("Button", function()
-print("Button Clicked")
-end)
-Folder.Switch("Switch", function(Status)
-print("Switch Triggered: " .. tostring(Status))
-end)
-Folder.Toggle("Toggle", function(Status)
-print("Toggle Triggered: " .. tostring(Status))
-end)
-Folder.Toggle("Toggle", function(Status)
-print("Toggle Triggered: " .. tostring(Status))
-end)
-Folder.TextBox("Textbox", "Placeholder", function(Text)
-print("TextBox Triggered: " .. Text)
-end)
-Main.Folder("Lipsum Expanded", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur eu mollis urna, quis feugiat tellus. Integer ut ligula sodales, sodales ipsum ut, imperdiet ipsum. In aliquet quam et venenatis pulvinar. Nullam fermentum porta felis sit amet interdum. Sed tristique fringilla mollis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nam quis tempus mauris, nec ultrices metus. Suspendisse mi urna, accumsan at nisi a, tristique porta libero. Integer lobortis elementum lacus cursus consectetur. Morbi mauris ante, posuere at malesuada et, tristique non ipsum. Proin vitae purus pretium, convallis est vitae, dignissim leo. Praesent nec felis vitae.")
+--Player Tab--
+local PlayerTab = Window:MakeTab({
+	Name = "Player",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
 
-local Cheat = Main.Cheat("Options", "A bunch of options you can use", function(Status)
-	print("Cheat Triggered: " .. tostring(Status))
-end)
-Cheat.Button("Button", function()
-	print("Button Clicked")
-end)
-Cheat.Switch("Switch", function(Status)
-	print("Switch Triggered: " .. tostring(Status))
-end)
-Cheat.Toggle("Toggle", function(Status)
-	print("Toggle Triggered: " .. tostring(Status))
-end)
-Cheat.Toggle("Toggle", function(Status)
-	print("Toggle Triggered: " .. tostring(Status))
-end)
-Cheat.TextBox("Textbox", "Placeholder", function(Text)
-	print("TextBox Triggered: " .. Text)
-end)
+local PlayerSection = PlayerTab:AddSection({
+	Name = "Player"
+})
 
-Main.Cheat("Lipsum Expanded", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur eu mollis urna, quis feugiat tellus. Integer ut ligula sodales, sodales ipsum ut, imperdiet ipsum. In aliquet quam et venenatis pulvinar. Nullam fermentum porta felis sit amet interdum. Sed tristique fringilla mollis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nam quis tempus mauris, nec ultrices metus. Suspendisse mi urna, accumsan at nisi a, tristique porta libero. Integer lobortis elementum lacus cursus consectetur. Morbi mauris ante, posuere at malesuada et, tristique non ipsum. Proin vitae purus pretium, convallis est vitae, dignissim leo. Praesent nec felis vitae.", function(Status)
-	print("Cheat Triggered: " .. tostring(Status))
-end)
 
-game:GetService("UserInputService").InputBegan:Connect(function(Input)
-	if Input.KeyCode == Enum.KeyCode.F then
-		Window:Toggle()
-	end
-end)
+PlayerSection:AddSlider({
+	Name = "Walkspeed",
+	Min = 16,
+	Max = 100,
+	Default = 5,
+	Color = Color3.fromRGB(255,255,255),
+	Increment = 1,
+	ValueName = "Walkspeed",
+	Callback = function(Value)
+        game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = Value
+	end    
+})
+
+--Player Tab End--
+
+--Settings Tab--
+
+local SettingsTab = Window:MakeTab({
+	Name = "Settings",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+local SettingsSection = SettingsTab:AddSection({
+	Name = "Settings"
+})
+
+SettingsSection:AddButton({
+	Name = "Destroy UI",
+	Callback = function()
+        OrionLib:Destroy()
+  	end    
+})
+
+--Settings End--
+
+OrionLib:Init() --UI Lib End
