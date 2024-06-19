@@ -3,7 +3,7 @@ print("Discord Server: https://discord.gg/FUKFyqzyqg")
 print("-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-")
 wait(2)
 
-local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/JECKS-SAMP/UI-LIB/main/script-new.lua')))()
+local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/JECKS-SAMP/UI-LIB/main/source-new.lua')))()
 
 OrionLib:MakeNotification({
 	Name = "ULTIMATE HUB",
