@@ -1,6 +1,6 @@
 print("https://discord.gg/FUKFyqzyqg")
 
-local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source-new.lua"))()
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source-new.lua", true))()
 wait(2)
 
 game.StarterGui:SetCore("SendNotification", {
@@ -9,11 +9,13 @@ game.StarterGui:SetCore("SendNotification", {
 	Text = "Loading Ui...",
 	Duration = 15,
 })
+
+local LexUi = Library.new("ULTIMATE HUB", "v0.2", 18107430965)
+LexUi.LoadingScreen()
 wait(15)
 
 print("Load Succesfully")
 
-local LexUi = Library.new("ULTIMATE HUB", "v0.2", 18107430965)
 local Info = LexUi:Tab("Information", 6022668945)
 local Main = LexUi:Tab("Main", 18115283037)
 local Setting = LexUi:Tab("Farm Settings", 18115285301)
