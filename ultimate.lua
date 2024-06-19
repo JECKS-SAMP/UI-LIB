@@ -13,18 +13,6 @@ OrionLib:MakeNotification({
 	Time = 5
 })
 
-local Window = OrionLib:MakeWindow({
-	Name = " ULTIMATE HUB | BLOX FRUIT",
-	HidePremium = false,
-	SaveConfig = false,
-	ShowIcon = true,
-	ConfigFolder = "UltimateHuB",
-	IntroText = "ULTIMATE HUB",
-	IntroIcon = "rbxassetid://18107430965",
-	Icon = "rbxassetid://18107430965",
-	IntroEnabled = true
-})
-
 _G.Settings = {
   Main = {
     ["Auto Farm Level"] = false,
@@ -807,6 +795,20 @@ spawn(function()
   end
 end
 end)
+
+wait(15)
+
+local Window = OrionLib:MakeWindow({
+	Name = " ULTIMATE HUB | BLOX FRUIT",
+	HidePremium = false,
+	SaveConfig = false,
+	ShowIcon = true,
+	ConfigFolder = "UltimateHuB",
+	IntroText = "ULTIMATE HUB",
+	IntroIcon = "rbxassetid://18107430965",
+	Icon = "rbxassetid://18107430965",
+	IntroEnabled = true
+})
 
 -- Tab Info
 local InfoTab = Window:MakeTab({
