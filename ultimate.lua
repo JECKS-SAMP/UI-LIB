@@ -354,6 +354,28 @@ function StopNoClip(Config)
 	end
 end
 
+function TP(destinationCFrame)
+    local localPlayer = game.Players.LocalPlayer
+    local humanoidRootPart = localPlayer.Character.HumanoidRootPart
+    local distance = (destinationCFrame.Position - humanoidRootPart.Position).Magnitude
+    local speed
+
+    if distance < 250 then
+        speed = 600
+    elseif distance < 500 then
+        speed = 400
+    elseif distance < 1000 then
+        speed = 350
+    else
+        speed = 200
+    end
+
+    local tweenService = game:GetService("TweenService")
+    local tweenInfo = TweenInfo.new(distance / speed, Enum.EasingStyle.Linear)
+
+    tweenService:Create(humanoidRootPart, tweenInfo, {CFrame = destinationCFrame}):Play()
+end
+
 function TP2(P1)
 	Distance = (P1.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
 	if Distance < 1000 then
