@@ -14,7 +14,7 @@ OrionLib:MakeNotification({
 })
 
 local Window = OrionLib:MakeWindow({
-	Name = "ULTIMATE HUB | BLOX FRUITS",
+	Name = " ULTIMATE HUB | BLOX FRUIT",
 	HidePremium = false,
 	SaveConfig = false,
 	ShowIcon = true,
@@ -206,7 +206,6 @@ local RigController = require(game:GetService("Players")["LocalPlayer"].PlayerSc
 local RigControllerR = getupvalues(RigController)[2]
 local realbhit = require(game.ReplicatedStorage.CombatFramework.RigLib)
 local cooldownfastattack = tick()
-local AutoSave = false
 
 function getAllBladeHits(Sizes)
   local Hits = {}
@@ -367,7 +366,7 @@ spawn(function()
   end)
   local function QuestCheck()
     local Lvl = game:GetService("Players").LocalPlayer.Data.Level.Value
-    if Lvl >= 1 and Lvl <= 9 then
+    if Lvl >= 0 and Lvl <= 10 then
       if tostring(game.Players.LocalPlayer.Team) == "Marines" then
         MobName = "Trainee [Lv. 5]"
         QuestName = "MarineQuest"
@@ -809,8 +808,6 @@ spawn(function()
 end
 end)
 
-wait(15)
-
 -- Tab Info
 local InfoTab = Window:MakeTab({
 	Name = "Info",
@@ -857,51 +854,90 @@ MainTab:AddToggle({
 	Name = "Auto Farm Level",
 	Default = _G.Settings.Main["Auto Farm Level"],
 	Callback = function(Value)
-		_G.AutoFarmLevelReal = value
-	    Auto_Farm_Level = value
-	    if value == false then
-	      toTarget(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame)
-	    end
-	    if AutoSave then
-        SaveSettings()
-      end
-	  end,
+    _G.AutoFarmLevelReal = value
+	  Auto_Farm_Level = value
+	  if value == false then
+	    toTarget(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame)
+	  end
+	  if _G.Settings.Configs["AutoSave"] then
+      SaveSettings()
+    end
+	end,
 })
 
-MainTab:AddButton({
-	Name = "Example Button",
-	Callback = function()
-    print("Main Button pressed")
-  end 
+-- Tab TP
+local TpTab = Window:MakeTab({
+	Name = "Main",
+	Icon = "rbxassetid://6026568198",
+	PremiumOnly = false
 })
 
-MainTab:AddSlider({
-	Name = "Example Slider",
-	Min = 0,
-	Max = 100,
-	Default = 50,
-	Color = Color3.fromRGB(255, 255, 255),
-	Increment = 1,
-	ValueName = "value",
-	Callback = function(Value)
-		print("Main Slider value: " .. tostring(Value))
-	end    
+local TpSection = TpTab:AddSection({
+	Name = "Teleport Menu"
 })
 
-MainTab:AddLabel("Main Label")
+TpTab:AddDropdown({
+	Name = "Select Island",
+	Options = {
+		"Pirate Island",
+		"Marine Island",
+		"Colosseum",
+		"Desert",
+		"Fountain City",
+		"Jungle",
+		"Marine Fort",
+		"Middle Town",
+		"Prison",
+		"Pirate Village",
+		"Sky 1",
+		"Sky 2",
+		"Snow",
+		"Under Water",
+		"Magma Village"
+	},
+	Callback = function(value)
+		local tweenService, tweenInfo = game:GetService("TweenService"), TweenInfo.new(45, Enum.EasingStyle.Linear)
+		local targetPosition
 
-MainTab:AddParagraph("Main Paragraph","This is an example paragraph in the Main tab.")
+		if value == "Pirate Island" then
+			targetPosition = CFrame.new(1041.886, 16.274, 1424.937)
+		elseif value == "Marine Island" then
+			targetPosition = CFrame.new(-2896.687, 41.489, 2009.275)
+		elseif value == "Colosseum" then
+			targetPosition = CFrame.new(-1541.088, 7.389, -2987.406)
+		elseif value == "Desert" then
+			targetPosition = CFrame.new(1094.321, 6.570, 4231.636)
+		elseif value == "Fountain City" then
+			targetPosition = CFrame.new(5529.724, 429.357, 4245.550)
+		elseif value == "Jungle" then
+			targetPosition = CFrame.new(-1615.188, 36.852, 150.805)
+		elseif value == "Marine Fort" then
+			targetPosition = CFrame.new(-4846.150, 20.652, 4393.651)
+		elseif value == "Middle Town" then
+			targetPosition = CFrame.new(-706.998, 7.852, 1547.522)
+		elseif value == "Prison" then
+			targetPosition = CFrame.new(4841.844, 5.652, 741.330)
+		elseif value == "Pirate Village" then
+			targetPosition = CFrame.new(-1146.429, 4.752, 3818.503)
+		elseif value == "Sky 1" then
+			targetPosition = CFrame.new(-4967.837, 717.672, -2623.843)
+		elseif value == "Sky 2" then
+			targetPosition = CFrame.new(-7876.077, 5545.582, -381.199)
+		elseif value == "Snow" then
+			targetPosition = CFrame.new(1100.361, 5.291, -1151.542)
+		elseif value == "Under Water" then
+			targetPosition = CFrame.new(61135.293, 18.472, 1597.683)
+		elseif value == "Magma Village" then
+			targetPosition = CFrame.new(-5248.272, 8.699, 8452.891)
+		end
 
-MainTab:AddTextbox({
-	Name = "Main Textbox",
-	Default = "default text",
-	TextDisappear = true,
-	Callback = function(Value)
-		print("Main Textbox input: " .. Value)
-	end	  
+		if targetPosition then
+			tweenService:Create(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart, tweenInfo, {CFrame = targetPosition}):Play()
+		end
+	end,
 })
 
--- Tab Settings
+-- Tab Setting
 local SettingsTab = Window:MakeTab({
 	Name = "Settings",
 	Icon = "rbxassetid://4483345998",
@@ -916,11 +952,8 @@ SettingsTab:AddToggle({
 	Name = "Auto Save Config",
 	Default = false,
 	Callback = function(Value)
-    AutoSave = value
-    _G.Settings.Configs["AutoSave"] = AutoSave
-    if AutoSave then
-			SaveSettings()
-		end
+    _G.Settings.Configs["AutoSave"] = Value
+		SaveSettings()
 	end
 })
 
@@ -933,7 +966,7 @@ SettingsTab:AddDropdown({
 	Options = {"Melee","Sword","Fruit"},
 	Callback = function(value)
 		SelectWeapon = value
-		if AutoSave then
+		if _G.Settings.Configs["AutoSave"] then
 			SaveSettings()
 		end
 	end,
@@ -1019,7 +1052,7 @@ SettingsTab:AddDropdown({
 	Options = {"Fast","Normal","Slow"},
 	Callback = function(value)
 		_G.Settings.Configs["Fast Attack Type"] = value
-		if AutoSave then
+		if _G.Settings.Configs["AutoSave"] then
 			SaveSettings()
 		end
 	end,
@@ -1052,7 +1085,7 @@ SettingsTab:AddToggle({
 	Default = false,
 	Callback = function(Value)
 		_G.Settings.Configs["Fast Attack"] = value
-		if AutoSave then
+		if _G.Settings.Configs["AutoSave"] then
 			SaveSettings()
 		end
 	end    
@@ -1063,7 +1096,7 @@ SettingsTab:AddToggle({
 	Default = _G.Settings.Configs["Auto Haki"],
 	Callback = function(Value)
 		_G.Settings.Configs["Auto Haki"] = value
-		if AutoSave then
+		if _G.Settings.Configs["AutoSave"] then
 			SaveSettings()
 		end
 	end,  
