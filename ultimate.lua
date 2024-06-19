@@ -3,8 +3,8 @@ print("Discord Server: https://discord.gg/FUKFyqzyqg")
 print("-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-")
 wait(2)
 
---local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/JECKS-SAMP/UI-LIB/main/script-new.lua')))()--
-local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
+local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/JECKS-SAMP/UI-LIB/main/source-news.lua')))()--
+--local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 
 OrionLib:MakeNotification({
 	Name = "ULTIMATE HUB",
@@ -17,6 +17,7 @@ local Window = OrionLib:MakeWindow({
 	Name = "ULTIMATE HUB | BLOX FRUITS",
 	HidePremium = false,
 	SaveConfig = true,
+	ShowIcon = true,
 	ConfigFolder = "UltimateHuB",
 	IntroText = "ULTIMATE HUB",
 	IntroIcon = "rbxassetid://18107430965",
