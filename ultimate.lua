@@ -3,7 +3,7 @@ print("Discord Server: https://discord.gg/FUKFyqzyqg")
 print("-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-")
 wait(2)
 
-local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/JECKS-SAMP/UI-LIB/main/source-new.lua')))()
+local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 
 OrionLib:MakeNotification({
 	Name = "ULTIMATE HUB",
@@ -15,6 +15,25 @@ OrionLib:MakeNotification({
 
 local Window = OrionLib:MakeWindow({Name = "ULTIMATE HUB | BLOX FRUITS", HidePremium = false, SaveConfig = true, ConfigFolder = "UltimateHuB", IntroEnabled = true})
 
+--Info Tab--
+local InfoTab = Window:MakeTab({
+	Name = "Info",
+	Icon = "rbxassetid://6026568198",
+	PremiumOnly = false
+)}
+
+InfoTab:AddSection({
+	Name = "Code Made In Indonesia. 🇮🇩🇮🇩"
+})
+
+InfoTab:AddSection({
+	Name = "Developer: @Lucifer"
+})
+
+InfoTab:AddSection({
+	Name = "My Tiktok: @lexyy.9k"
+})
+
 --Main Tab--
 local MainTab = Window:MakeTab({
 	Name = "Main",
@@ -24,28 +43,6 @@ local MainTab = Window:MakeTab({
 
 local MainSection = MainTab:AddSection({
 	Name = "Main"
-})
-
-MainSelection:AddTextbox({
-	Name = "LEXSAMP",
-	Default = "default box input",
-	TextDisappear = true,
-	Callback = function(Value)
-		print(Value)
-	end	  
-})
-
-MainSection:AddSlider({
-	Name = "Walkspeed",
-	Min = 16,
-	Max = 100,
-	Default = 5,
-	Color = Color3.fromRGB(255,255,255),
-	Increment = 1,
-	ValueName = "Walkspeed",
-	Callback = function(Value)
-        game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = Value
-	end    
 })
 
 --Player Tab--
@@ -59,8 +56,7 @@ local PlayerSection = PlayerTab:AddSection({
 	Name = "Player"
 })
 
-
-PlayerSection:AddSlider({
+PlayerTab:AddSlider({
 	Name = "Walkspeed",
 	Min = 16,
 	Max = 100,
@@ -87,7 +83,7 @@ local SettingsSection = SettingsTab:AddSection({
 	Name = "Settings"
 })
 
-SettingsSection:AddButton({
+SettingsTab:AddButton({
 	Name = "Destroy UI",
 	Callback = function()
         OrionLib:Destroy()
@@ -95,5 +91,4 @@ SettingsSection:AddButton({
 })
 
 --Settings End--
-
 OrionLib:Init() --UI Lib End
