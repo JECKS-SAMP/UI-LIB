@@ -107,7 +107,7 @@ _G.Settings = {
 
 
     ["Fast Attack"] = true,
-    ["Fast Attack Type"] = {"Fast"}, --{Normal,Fast,Slow}
+    ["Fast Attack Type"] = {"Normal"}, --{Normal,Fast,Slow}
 
     ["Select Weapon"] = {},
 
@@ -164,6 +164,7 @@ _G.Settings = {
   },
 
   Fruits = {
+    ["Teleport Fruits"] = false,
     ["Auto Buy Random Fruits"] = false,
     ["Auto Store Fruits"] = false,
 
@@ -193,6 +194,8 @@ local CombatFrameworkR = getupvalues(CombatFramework)[2]
 local RigController = require(game:GetService("Players")["LocalPlayer"].PlayerScripts.CombatFramework.RigController)
 local RigControllerR = getupvalues(RigController)[2]
 local realbhit = require(game.ReplicatedStorage.CombatFramework.RigLib)
+local UIS = game:GetService("UserInputService")
+local playerTP = game.Players.LocalPlayer.Character
 local cooldownfastattack = tick()
 
 function getAllBladeHits(Sizes)
@@ -341,6 +344,134 @@ function SaveSettings()
 end
 
 LoadSettings()
+
+function isnil(thing)
+	return (thing == nil)
+end
+local function round(n)
+	return math.floor(tonumber(n) + 0.5)
+end
+Number = math.random(1, 1000000)
+
+function UpdateEspPlayer()
+	if ESPPlayer then
+		pcall(function()
+			for i,v in pairs(game.Players:GetPlayers()) do
+				if not isnil(v.Character) then
+					if not v.Character.Head:FindFirstChild('NameEsp'..v.Name) then
+						local BillboardGui = Instance.new("BillboardGui")
+						local ESP = Instance.new("TextLabel")
+						local HealthESP = Instance.new("TextLabel")
+						BillboardGui.Parent = v.Character.Head
+						BillboardGui.Name = 'NameEsp'..v.Name
+						BillboardGui.ExtentsOffset = Vector3.new(0, 1, 0)
+						BillboardGui.Size = UDim2.new(1,200,1,30)
+						BillboardGui.Adornee = v.Character.Head
+						BillboardGui.AlwaysOnTop = true
+						ESP.Name = "ESP"
+						ESP.Parent = BillboardGui
+						ESP.TextTransparency = 0
+						ESP.BackgroundTransparency = 1
+						ESP.Size = UDim2.new(0, 200, 0, 30)
+						ESP.Position = UDim2.new(0,25,0,0)
+						ESP.Font = Enum.Font.Gotham
+						ESP.Text = (v.Name ..' '.."[ "..round((game:GetService('Players').LocalPlayer.Character.Head.Position - v.Character.Head.Position).Magnitude/3) ..' M'.." ]")
+						ESP.TextColor3 = Color3.new(0, 255, 255)
+						ESP.TextSize = 14
+						ESP.TextStrokeTransparency = 0.500
+						ESP.TextWrapped = true
+						HealthESP.Name = "HealthESP"
+						HealthESP.Parent = ESP
+						HealthESP.TextTransparency = 0
+						HealthESP.BackgroundTransparency = 1
+						HealthESP.Position = ESP.Position + UDim2.new(0, -25, 0, 15)
+						HealthESP.Size = UDim2.new(0, 200, 0, 30)
+						HealthESP.Font = Enum.Font.Gotham
+						HealthESP.TextColor3 = Color3.fromRGB(80, 255, 245)
+						HealthESP.TextSize = 14
+						HealthESP.TextStrokeTransparency = 0.500
+						HealthESP.TextWrapped = true
+						HealthESP.Text = "Health "..math.floor(v.Character.Humanoid.Health).."/"..math.floor(v.Character.Humanoid.MaxHealth)
+					else
+						v.Character.Head['NameEsp'..v.Name].ESP.Text = (v.Name ..' '..round((game:GetService('Players').LocalPlayer.Character.Head.Position - v.Character.Head.Position).Magnitude/3) ..' M')
+						v.Character.Head['NameEsp'..v.Name].ESP.HealthESP.Text = "Health "..math.floor(v.Character.Humanoid.Health).."/"..math.floor(v.Character.Humanoid.MaxHealth)
+						v.Character.Head:FindFirstChild('NameEsp'..v.Name).ESP.TextTransparency = 0
+						v.Character.Head:FindFirstChild('NameEsp'..v.Name).ESP.HealthESP.TextTransparency = 0
+					end
+				end
+			end
+		end)
+	else
+		for i,v in pairs(game.Players:GetPlayers()) do
+			if v.Character.Head:FindFirstChild('NameEsp'..v.Name) then
+				pcall(function()
+					v.Character.Head:FindFirstChild('NameEsp'..v.Name):Destroy()
+				end)
+			end
+		end
+	end 
+end
+
+function UpdateBfEsp() 
+	for i,v in pairs(game.Workspace:GetChildren()) do
+		pcall(function()
+			if DevilFruitESP then
+				if string.find(v.Name, "Fruit") then 
+					if not v.Handle:FindFirstChild('NameEsp'..Number) then
+						local bill = Instance.new('BillboardGui',v.Handle)
+						bill.Name = 'NameEsp'..Number
+						bill.ExtentsOffset = Vector3.new(0, 1, 0)
+						bill.Size = UDim2.new(1,200,1,30)
+						bill.Adornee = v.Handle
+						bill.AlwaysOnTop = true
+
+						local name = Instance.new('TextLabel',bill)
+						name.Font = "GothamBold"
+						name.FontSize = "Size14"
+						name.TextWrapped = true
+						name.Size = UDim2.new(1,0,1,0)
+						name.TextYAlignment = 'Top'
+						name.BackgroundTransparency = 1
+						name.TextStrokeTransparency = 0.5
+						name.TextColor3 = Color3.fromRGB(255, 0, 0)
+						name.Text = (v.Name ..' \n'.. round((game:GetService('Players').LocalPlayer.Character.Head.Position - v.Handle.Position).Magnitude/3) ..' M')
+					else
+						v.Handle['NameEsp'..Number].TextLabel.Text = (v.Name ..' \n'.. round((game:GetService('Players').LocalPlayer.Character.Head.Position - v.Handle.Position).Magnitude/3) ..' M')
+					end
+				end
+			else
+				if v.Handle:FindFirstChild('NameEsp'..Number) then
+					v.Handle:FindFirstChild('NameEsp'..Number):Destroy()
+				end
+			end
+		end)
+	end
+end
+
+function StopNoClip(Config)
+	if Config == false then
+	    if game:GetService("Workspace"):FindFirstChild("TaiFoot") then
+	        game:GetService("Workspace"):FindFirstChild("TaiFoot"):Destroy()
+	    end
+	end
+end
+
+function TP2(P1)
+	Distance = (P1.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
+	if Distance < 1000 then
+		Speed = 400
+	elseif Distance >= 1000 then
+		Speed = 250
+	end
+	game:GetService("TweenService"):Create(
+		game.Players.LocalPlayer.Character.HumanoidRootPart,
+		TweenInfo.new(Distance/Speed, Enum.EasingStyle.Linear),
+		{CFrame = P1}
+	):Play()
+	StopNoClip(true)
+	wait(Distance/Speed)
+	StopNoClip(false)
+end
 
 ------------ // AutoUpdate \\ ------------
 spawn(function()
@@ -867,10 +998,43 @@ MainTab:AddToggle({
 	end,
 })
 
+-- Tab Fruits
+local FruitTab = Window:MakeTab({
+	Name = "Fruit Menu",
+	Icon = "rbxassetid://7044226690",
+	PremiumOnly = false
+})
+
+local FruitSection = FruitTab:AddSection({
+	Name = "Fruit Teleport"
+})
+
+if playerTP.Humanoid.Health > 1 then
+  if _G.Settings.Configs["AutoSave"] then
+    UIS.InputBegan:Connect(function(input)
+        if input.KeyCode == Enum.KeyCode.K then
+            local powerLocations = game.Workspace.PowerSpawn.SpawnedPower:FindFirstChildOfClass("Tool")
+            playerTP:MoveTo(powerLocations.Handle.Position)
+        end
+    end)
+  end
+end
+
+FruitTab:AddToggle({
+	Name = "Auto Teleport To Fruit",
+	Default = false,
+	Callback = function(Value)
+	  _G.Settings.Fruit["Teleport Fruits"] = value
+	  if _G.Settings.Configs["AutoSave"] then
+      SaveSettings()
+    end
+	end,
+})
+
 -- Tab Tp
 local TpTab = Window:MakeTab({
 	Name = "Teleport",
-	Icon = "rbxassetid://6026568198",
+	Icon = "rbxassetid://7044226690",
 	PremiumOnly = false
 })
 
@@ -1063,38 +1227,47 @@ while wait() do
 end
 end)
 
-SettingsTab:AddDropdown({
-	Name = "Fast Attack Type",
-	Options = {"Fast","Normal","Slow"},
-	Callback = function(value)
-		_G.Settings.Configs["Fast Attack Type"] = value
-		if _G.Settings.Configs["AutoSave"] then
-			SaveSettings()
-		end
-	end,
-})
 coroutine.wrap(function()
-  while task.wait(.1) do
-    local ac = CombatFrameworkR.activeController
-    if ac and ac.equipped then
-      if FastAttack and _G.Settings.Configs["Fast Attack"] then
-        AttackFunction()
-        if _G.Settings.Configs["Fast Attack Type"] == "Normal" then
-          if tick() - cooldownfastattack > .9 then wait(.1) cooldownfastattack = tick() end
-        elseif _G.Settings.Configs["Fast Attack Type"] == "Fast" then
-          if tick() - cooldownfastattack > 1.5 then wait(.01) cooldownfastattack = tick() end
-        elseif _G.Settings.Configs["Fast Attack Type"] == "Slow" then
-          if tick() - cooldownfastattack > .3 then wait(.7) cooldownfastattack = tick() end
-        end
-      elseif FastAttack and _G.Settings.Configs["Fast Attack"] == false then
-        if ac.hitboxMagnitude ~= 55 then
-          ac.hitboxMagnitude = 55
-        end
-        ac:attack()
+  game:GetService("RunService").Stepped:Connect(function()
+      if getupvalues(CombatFramework)[2]['activeController'].timeToNextAttack then
+          if _G.Settings.Configs["Fast Attack"] then
+              local attackSpeed = _G.Settings.Configs["Fast Attack Type"]
+
+              if attackSpeed == "Fast" then
+                  getupvalues(CombatFramework)[2]['activeController'].timeToNextAttack = 0
+              elseif attackSpeed == "Normal" then
+                  getupvalues(CombatFramework)[2]['activeController'].timeToNextAttack = 1
+              elseif attackSpeed == "Slow" then
+                  getupvalues(CombatFramework)[2]['activeController'].timeToNextAttack = 2
+              end
+              getupvalues(CombatFramework)[2]['activeController'].hitboxMagnitude = 25
+              getupvalues(CombatFramework)[2]['activeController']:attack()
+          else
+              getupvalues(CombatFramework)[2]['activeController'].timeToNextAttack = nil
+          end
       end
-    end
-  end
+  end)
 end)()
+
+SettingsTab:AddDropdown({
+  Name = "Fast Attack Type",
+  Options = {"Fast","Normal","Slow"},
+  Callback = function(value)
+      if _G.Settings.Configs["Fast Attack"] then
+          _G.Settings.Configs["Fast Attack Type"] = value
+          if _G.Settings.Configs["AutoSave"] then
+              SaveSettings()
+          end
+      else
+        OrionLib:MakeNotification({
+          Name = "ULTIMATE HUB",
+          Content = "Please Enable Fast Attack",
+          Image = "rbxassetid://18107430965",
+          Time = 5
+        })
+      end
+  end,
+})
 
 SettingsTab:AddToggle({
 	Name = "Fast Attack",
