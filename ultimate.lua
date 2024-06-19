@@ -22,15 +22,15 @@ local InfoTab = Window:MakeTab({
 	PremiumOnly = false
 )}
 
-InfoTab:AddSection({
+local InfoSection = InfoTab:AddSection({
 	Name = "Code Made In Indonesia. 🇮🇩🇮🇩"
 })
 
-InfoTab:AddSection({
+local InfoSection = InfoTab:AddSection({
 	Name = "Developer: @Lucifer"
 })
 
-InfoTab:AddSection({
+local InfoSection = InfoTab:AddSection({
 	Name = "My Tiktok: @lexyy.9k"
 })
 
