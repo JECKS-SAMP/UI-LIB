@@ -3,7 +3,7 @@ print("Discord Server: https://discord.gg/FUKFyqzyqg")
 print("-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-")
 wait(2)
 
-local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/JECKS-SAMP/UI-LIB/main/source-new.lua')))()
+local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/JECKS-SAMP/UI-LIB/main/script-new.lua')))()
 
 OrionLib:MakeNotification({
 	Name = "ULTIMATE HUB",
@@ -23,15 +23,7 @@ local InfoTab = Window:MakeTab({
 )}
 
 local InfoSection = InfoTab:AddSection({
-	Name = "Code Made In Indonesia. 🇮🇩🇮🇩"
-})
-
-local InfoSection = InfoTab:AddSection({
-	Name = "Developer: @Lucifer"
-})
-
-local InfoSection = InfoTab:AddSection({
-	Name = "My Tiktok: @lexyy.9k"
+	Name = "Code Made In Indonesia."
 })
 
 --Main Tab--
