@@ -699,7 +699,7 @@ function OrionLib:MakeWindow(WindowConfig)
 			Parent = Orion, 
 			Size = UDim2.new(0, 200, 0, 0),
 			Position = UDim2.new(0.5, 19, 0.5, 0),
-			ImageColor3 = Color3.fromRGB(25, 25, 25),
+			BackgroundColor3 = Color3.fromRGB(25, 25, 25),
 			AutomaticSize = Enum.AutomaticSize.Y,
 			BackgroundTransparency = 1
 		})
@@ -730,8 +730,8 @@ function OrionLib:MakeWindow(WindowConfig)
 		wait(0.3)
 		TweenService:Create(LoadSequenceText, TweenInfo.new(.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextTransparency = 0}):Play()
 		wait(2)
-		TweenService:Create(LoadSequenceText, TweenInfo.new(.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextTransparency = 1}):Play()
 		TweenService:Create(NotificationFrame, TweenInfo.new(.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextTransparency = 1}):Play()
+		TweenService:Create(LoadSequenceText, TweenInfo.new(.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextTransparency = 1}):Play()
 		
 		MainWindow.Visible = true
 		NotificationFrame:Destroy()
