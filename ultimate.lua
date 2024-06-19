@@ -3,7 +3,7 @@ print("Discord Server: https://discord.gg/FUKFyqzyqg")
 print("-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-")
 wait(2)
 
-local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
+local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/JECKS-SAMP/UI-LIB/main/source-new.lua')))()
 
 OrionLib:MakeNotification({
 	Name = "ULTIMATE HUB",
@@ -56,23 +56,7 @@ local PlayerSection = PlayerTab:AddSection({
 	Name = "Player"
 })
 
-PlayerTab:AddSlider({
-	Name = "Walkspeed",
-	Min = 16,
-	Max = 100,
-	Default = 5,
-	Color = Color3.fromRGB(255,255,255),
-	Increment = 1,
-	ValueName = "Walkspeed",
-	Callback = function(Value)
-        game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = Value
-	end    
-})
-
---Player Tab End--
-
 --Settings Tab--
-
 local SettingsTab = Window:MakeTab({
 	Name = "Settings",
 	Icon = "rbxassetid://4483345998",
@@ -90,5 +74,4 @@ SettingsTab:AddButton({
   	end    
 })
 
---Settings End--
-OrionLib:Init() --UI Lib End
+OrionLib:Init()
