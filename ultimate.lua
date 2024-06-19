@@ -3,7 +3,7 @@ print("Discord Server: https://discord.gg/FUKFyqzyqg")
 print("-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-")
 wait(2)
 
-local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/JECKS-SAMP/UI-LIB/main/source-news.lua')))()
+local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/JECKS-SAMP/UI-LIB/main/source-news.lua')))()--
 --local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 
 OrionLib:MakeNotification({
@@ -902,18 +902,9 @@ dropdown = TpTab:AddDropdown({
 	},
 	Callback = function(value)
 		if value == previousValue then
-			-- Stop teleport
+
 			game:GetService("TweenService"):Pause()
-			
-			-- Make stop notification
-			OrionLib:MakeNotification({
-				Name = "ULTIMATE HUB",
-				Content = "Teleport Stopped!",
-				Image = "rbxassetid://18107430965",
-				Time = 5
-			})
-			
-			-- Reset dropdown selection
+
 			dropdown:Set(nil)
 			previousValue = nil
 			return
@@ -957,14 +948,7 @@ dropdown = TpTab:AddDropdown({
 
 		if targetPosition then
 			tweenService:Create(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart, tweenInfo, {CFrame = targetPosition}):Play()
-			
-			-- Make teleport notification
-			OrionLib:MakeNotification({
-				Name = "ULTIMATE HUB",
-				Content = "Teleporting to " .. value .. "!",
-				Image = "rbxassetid://18107430965",
-				Time = 5
-			})
+
 		end
 	end,
 })
