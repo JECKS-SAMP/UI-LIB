@@ -696,6 +696,17 @@ function OrionLib:MakeWindow(WindowConfig)
 
 	local function LoadSequence()
 		MainWindow.Visible = false
+
+		local BlurBackground = Instance.new("ImageLabel")
+		BlurBackground.Parent = Orion
+		BlurBackground.AnchorPoint = Vector2.new(0.5, 0.5)
+		BlurBackground.Position = UDim2.new(0.5, 0, 0.5, 0)
+		BlurBackground.Size = UDim2.new(1, 0, 1, 0)
+		BlurBackground.BackgroundTransparency = 1
+		BlurBackground.Image = "rbxassetid://rbxassetid://3887014957"
+		BlurBackground.ImageTransparency = 0.85
+		BlurBackground.ZIndex = 0
+
 		local LoadSequenceLogo = SetProps(MakeElement("Image", WindowConfig.IntroIcon), {
 			Parent = Orion,
 			AnchorPoint = Vector2.new(0.5, 0.5),
