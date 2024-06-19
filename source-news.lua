@@ -694,14 +694,13 @@ function OrionLib:MakeWindow(WindowConfig)
 
 	local function LoadSequence()
 		MainWindow.Visible = false
-
-		local NotificationFrame = SetProps(MakeElement("RoundFrame"), {
-			Parent = Orion, 
+		
+		local NotificationFrame = SetChildren(SetProps(MakeElement("RoundFrame", Color3.fromRGB(25, 25, 25), 0, 10), {
+			Parent = Orion,
 			Size = UDim2.new(0, 200, 0, 0),
 			Position = UDim2.new(0.5, 19, 0.5, 0),
-			BackgroundColor3 = Color3.fromRGB(25, 25, 25),
-			AutomaticSize = Enum.AutomaticSize.Y,
-			BackgroundTransparency = 1
+			BackgroundTransparency = 1,
+			AutomaticSize = Enum.AutomaticSize.Y
 		})
 
 		local LoadSequenceLogo = SetProps(MakeElement("Image", WindowConfig.IntroIcon), {
