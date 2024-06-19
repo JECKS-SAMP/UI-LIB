@@ -1024,7 +1024,7 @@ FruitTab:AddToggle({
 	Name = "Auto Teleport To Fruit",
 	Default = false,
 	Callback = function(Value)
-	  _G.Settings.Fruit["Teleport Fruits"] = value
+	  _G.Settings.Fruits["Teleport Fruits"] = value
 	  if _G.Settings.Configs["AutoSave"] then
       SaveSettings()
     end
