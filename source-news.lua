@@ -698,17 +698,17 @@ function OrionLib:MakeWindow(WindowConfig)
 		local LoadSequenceLogo = SetProps(MakeElement("Image", WindowConfig.IntroIcon), {
 			Parent = Orion,
 			AnchorPoint = Vector2.new(0.5, 0.5),
-			Position = UDim2.new(0.5, -5, 0.4, 0),
+			Position = UDim2.new(0.5, -6, 0.4, 0),
 			Size = UDim2.new(0, 56, 0, 56),
 			ImageColor3 = Color3.fromRGB(255, 255, 255),
 			ImageTransparency = 1
 		})
 
-		local LoadSequenceText = SetProps(MakeElement("Label", WindowConfig.IntroText, 20), {
+		local LoadSequenceText = SetProps(MakeElement("Label", WindowConfig.IntroText, 25), {
 			Parent = Orion,
 			Size = UDim2.new(1, 0, 1, 0),
 			AnchorPoint = Vector2.new(0.5, 0.5),
-			Position = UDim2.new(0.5, 24, 0.5, 0),
+			Position = UDim2.new(0.5, 28, 0.5, 0),
 			TextXAlignment = Enum.TextXAlignment.Center,
 			Font = Enum.Font.GothamBold,
 			TextTransparency = 1
@@ -723,7 +723,6 @@ function OrionLib:MakeWindow(WindowConfig)
 		TweenService:Create(LoadSequenceText, TweenInfo.new(.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextTransparency = 1}):Play()
 		
 		MainWindow.Visible = true
-		NotificationFrame:Destroy()
 		LoadSequenceLogo:Destroy()
 		LoadSequenceText:Destroy()
 	end 
