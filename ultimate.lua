@@ -12,7 +12,6 @@ OrionLib:MakeNotification({
 	Time = 5
 })
 
-
 local Window = OrionLib:MakeWindow({Name = "ULTIMATE HUB | BLOX FRUITS", HidePremium = false, SaveConfig = true, ConfigFolder = "UltimateHuB", IntroEnabled = true})
 
 --Info Tab--
@@ -59,7 +58,7 @@ local SettingsSection = SettingsTab:AddSection({
 	Name = "Settings"
 })
 
-SettingsTab:AddButton({
+SettingsSection:AddButton({
 	Name = "Destroy UI",
 	Callback = function()
         OrionLib:Destroy()
