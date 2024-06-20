@@ -2091,49 +2091,51 @@ MainTab:AddToggle({
 })
 
 local MainSection = MainTab:AddSection({
-	Name = "Other Farm"
+    Name = "Other Farm"
 })
 
-MainTab:AddToggle({
-	Name = "Auto Factory",
-	Default = _G.Settings.Main["Auto Factory"],
-	Callback = function(Value)
-		_G.Settings.Main["Auto Factory"] = Value
-		Factory = Value
-		if Value == false then
-			wait(1)
-			TP(game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame)
-		end
-		
-		if _G.Settings.Configs["AutoSave"] then
-			SaveSettings()
-		end
-	end,
-})
+if not Old_World then
+    MainTab:AddToggle({
+        Name = "Auto Factory",
+        Default = _G.Settings.Main["Auto Factory"],
+        Callback = function(Value)
+            _G.Settings.Main["Auto Factory"] = Value
+            Factory = Value
+            if Value == false then
+                wait(1)
+                TP(game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame)
+            end
+            
+            if _G.Settings.Configs["AutoSave"] then
+                SaveSettings()
+            end
+        end,
+    })
 
-if New_World then
-	MainTab:AddToggle({
-		Name = "Auto Third Sea",
-		Default = _G.Settings.Main["Auto Sea 2"],
-		Callback = function(Value)
-			_G.Settings.Main["Auto Sea 2"] = Value
-			ReadyThirdSea = Value
-			TP(game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame)
-			if ReadyThirdSea and game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BartiloQuestProgress", "Bartilo") ~= 3 then
-				DiscordLib:Notification("Auto Third Sea", "You must have finished Bartilo Quest", "Ok")
-			elseif ReadyThirdSea and game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("ZQuestProgress", "Check") ~= 0 then
-				DiscordLib:Notification("Auto Third Sea", "You must have killed Don Swan first", "Ok")
-			elseif ReadyThirdSea and SelectToolWeapon == "" then
-				DiscordLib:Notification("Auto Third Sea", "Select Weapon First", "Ok")
-			else
-				AutoThird = Value
-			end
-			
-			if _G.Settings.Configs["AutoSave"] then
-				SaveSettings()
-			end
-		end,
-	})
+    elseif New_World then
+        MainTab:AddToggle({
+            Name = "Auto Third Sea",
+            Default = _G.Settings.Main["Auto Sea 2"],
+            Callback = function(Value)
+                _G.Settings.Main["Auto Sea 2"] = Value
+                ReadyThirdSea = Value
+                TP(game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame)
+                if ReadyThirdSea and game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BartiloQuestProgress", "Bartilo") ~= 3 then
+                    DiscordLib:Notification("Auto Third Sea", "You must have finished Bartilo Quest", "Ok")
+                elseif ReadyThirdSea and game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("ZQuestProgress", "Check") ~= 0 then
+                    DiscordLib:Notification("Auto Third Sea", "You must have killed Don Swan first", "Ok")
+                elseif ReadyThirdSea and SelectToolWeapon == "" then
+                    DiscordLib:Notification("Auto Third Sea", "Select Weapon First", "Ok")
+                else
+                    AutoThird = Value
+                end
+                
+                if _G.Settings.Configs["AutoSave"] then
+                    SaveSettings()
+                end
+            end,
+        })
+    end
 end
 
 if Old_World then
@@ -2922,6 +2924,70 @@ SettingsTab:AddToggle({
     _G.Settings.Configs["AutoSave"] = Value
 		SaveSettings()
 	end
+})
+
+local SettingsSection = SettingsTab:AddSection({
+	Name = "Coordinat Menu"
+})
+
+SettingsTab:AddButton({
+    Name = "Show Coordinate",
+    Callback = function()
+        if game.Players.LocalPlayer:FindFirstChild("CoordinateGUI") then
+            game.Players.LocalPlayer.CoordinateGUI:Destroy()
+        end
+
+        local screenGui = Instance.new("ScreenGui", game.Players.LocalPlayer:WaitForChild("PlayerGui"))
+        screenGui.Name = "CoordinateGUI"
+
+        local coordLabel = Instance.new("TextLabel", screenGui)
+        coordLabel.Size = UDim2.new(0, 300, 0, 50)
+        coordLabel.Position = UDim2.new(1, -350, 0.5, -25)
+        coordLabel.BackgroundTransparency = 0.5
+        coordLabel.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+        coordLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+        coordLabel.Font = Enum.Font.GothamBold
+        coordLabel.TextSize = 14
+        coordLabel.TextStrokeTransparency = 0.5
+        coordLabel.Text = "Coordinates: Updating..."
+
+        game:GetService("RunService").RenderStepped:Connect(function()
+            local player = game.Players.LocalPlayer
+            if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                local pos = player.Character.HumanoidRootPart.Position
+                coordLabel.Text = string.format("Coordinates: X: %.2f, Y: %.2f, Z: %.2f", pos.X, pos.Y, pos.Z)
+            end
+        end)
+    end
+})
+
+local SettingsSection = SettingsTab:AddSection({
+	Name = "PlaceID Menu"
+})
+
+SettingsTab:AddButton({
+    Name = "Show Place ID",
+    Callback = function()
+        if game.Players.LocalPlayer:FindFirstChild("PlaceIDGUI") then
+            game.Players.LocalPlayer.PlaceIDGUI:Destroy()
+        end
+
+        -- Membuat ScreenGui
+        local screenGui = Instance.new("ScreenGui", game.Players.LocalPlayer:WaitForChild("PlayerGui"))
+        screenGui.Name = "PlaceIDGUI"
+
+        -- Membuat TextLabel untuk menampilkan Place ID
+        local placeIDLabel = Instance.new("TextLabel", screenGui)
+        placeIDLabel.Size = UDim2.new(0, 300, 0, 50)
+        placeIDLabel.Position = UDim2.new(1, -350, 0.5, -75)
+        placeIDLabel.BackgroundTransparency = 0.5
+        placeIDLabel.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+        placeIDLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+        placeIDLabel.Font = Enum.Font.GothamBold
+        placeIDLabel.TextSize = 14
+        placeIDLabel.TextStrokeTransparency = 0.5
+        placeIDLabel.Text = "Place ID: " .. game.PlaceId
+    end
 })
 
 local SettingsSection = SettingsTab:AddSection({
