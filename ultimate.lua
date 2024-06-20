@@ -17,6 +17,9 @@ _G.Settings = {
   Main = {
     ["Auto Farm Level"] = false,
     ["Fast Auto Farm Level"] = false,
+    
+    ["Auto Sea 2"] = false,
+    ["Auto Sea 3"] = false,
 
     --[Mob Aura]
 
@@ -72,7 +75,6 @@ _G.Settings = {
     ["Auto Magma Ore Sea 1"] = false,
     ["Auto Mystic Droplet"] = false,
     ["Auto Dragon Scales"] = false,
-
   },
   FightingStyle = {
     ["Auto God Human"] = false,
@@ -85,6 +87,7 @@ _G.Settings = {
     ["Auto Dragon Talon"] = false,
   },
   Boss = {
+    ["Auto Farm Boss"] = false,
     ["Auto All Boss"] = false,
     ["Auto Boss Select"] = false,
     ["Select Boss"] = {},
@@ -101,14 +104,17 @@ _G.Settings = {
   Configs = {
     ["AutoSave"] = false,
     ["AutoSkill"] = false,
+    
+    ["Esp Players"] = false,
+    ["Esp Fruits"] = false,
+    ["Esp Chest"] = false,
+    ["Esp Flower"] = false,
+
     ["Double Quest"] = false,
     ["Bypass TP"] = false,
     ["Select Team"] = {"Pirate"}, --{Pirate,Marine}
-
-
     ["Fast Attack"] = true,
     ["Fast Attack Type"] = {"Normal"}, --{Normal,Fast,Slow}
-
     ["Select Weapon"] = {},
 
 
@@ -174,7 +180,8 @@ _G.Settings = {
 
   Raids = {
     ["Auto Raids"] = false,
-
+    
+    ["Auto Buy Chip"] = false,
     ["Kill Aura"] = false,
     ["Auto Awakened"] = false,
     ["Auto Next Place"] = false,
@@ -249,10 +256,99 @@ end
 local function round(n)
 	return math.floor(tonumber(n) + 0.5)
 end
+
 Number = math.random(1, 1000000)
 
+function UpdateFlower()
+    for _, v in pairs(game.Workspace:GetChildren()) do
+        pcall(function()
+            if v.Name == "Flower1" or v.Name == "Flower2" then
+                if _G.Settings.Configs["Esp Flower"] then
+                    if not v:FindFirstChild("FindFlower"..Number) then
+                        local bill = Instance.new("BillboardGui", v)
+                        bill.Name = "FindFlower"..Number
+                        bill.ExtentsOffset = Vector3.new(0, 1, 0)
+                        bill.Size = UDim2.new(1, 200, 1, 30)
+                        bill.Adornee = v
+                        bill.AlwaysOnTop = true
+
+                        local name = Instance.new("TextLabel", bill)
+                        name.Font = Enum.Font.GothamBold
+                        name.FontSize = Enum.FontSize.Size14
+                        name.TextWrapped = true
+                        name.Size = UDim2.new(1, 0, 1, 0)
+                        name.TextYAlignment = Enum.TextYAlignment.Top
+                        name.BackgroundTransparency = 1
+                        name.TextStrokeTransparency = 0.5
+                        name.TextColor3 = Color3.fromRGB(248, 41, 41)
+
+                        if v.Name == "Flower1" then
+                            name.Text = "Blue Flower\n" .. math.round((v.Position - game:GetService('Players').LocalPlayer.Character.HumanoidRootPart.Position).Magnitude / 3) .. " m."
+                            name.TextColor3 = Color3.fromRGB(28, 126, 255)
+                        elseif v.Name == "Flower2" then
+                            name.Text = "Red Flower\n" .. math.round((v.Position - game:GetService('Players').LocalPlayer.Character.HumanoidRootPart.Position).Magnitude / 3) .. " m."
+                            name.TextColor3 = Color3.fromRGB(248, 41, 41)
+                        end
+                    else
+                        v["FindFlower"..Number].TextLabel.Text = v.Name .. "\n" .. math.round((v.Position - game:GetService('Players').LocalPlayer.Character.HumanoidRootPart.Position).Magnitude / 3) .. " m."
+                    end
+                else
+                    if v:FindFirstChild("FindFlower"..Number) then
+                        v:FindFirstChild("FindFlower"..Number):Destroy()
+                    end
+                end
+            end
+        end)
+    end
+end
+
+function UpdateChest()
+    for _, v in pairs(game.Workspace:GetChildren()) do
+        pcall(function()
+            if v.Name == "Chest1" or v.Name == "Chest2" or v.Name == "Chest3" then
+                if _G.Settings.Configs["Esp Chest"] then
+                    if (v.Position - game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position).Magnitude <= 60000 then
+                        if not v:FindFirstChild("ChestESP"..Number) then
+                            local Bb = Instance.new("BillboardGui", v)
+                            Bb.Name = "ChestESP"..Number
+                            Bb.ExtentsOffset = Vector3.new(0, 1, 0)
+                            Bb.Size = UDim2.new(1, 200, 1, 30)
+                            Bb.Adornee = v
+                            Bb.AlwaysOnTop = true
+
+                            local Textlb = Instance.new("TextLabel", Bb)
+                            Textlb.Font = Enum.Font.GothamBold
+                            Textlb.FontSize = Enum.FontSize.Size14
+                            Textlb.Size = UDim2.new(1, 0, 1, 0)
+                            Textlb.BackgroundTransparency = 1
+                            Textlb.TextStrokeTransparency = 0.5
+
+                            if v.Name == "Chest1" then
+                                Textlb.TextColor3 = Color3.fromRGB(174, 123, 47)
+                                Textlb.Text = "Bronze Chest\n" .. math.round((v.Position - game:GetService('Players').LocalPlayer.Character.HumanoidRootPart.Position).Magnitude / 3) .. " m."
+                            elseif v.Name == "Chest2" then
+                                Textlb.TextColor3 = Color3.fromRGB(255, 255, 127)
+                                Textlb.Text = "Gold Chest\n" .. math.round((v.Position - game:GetService('Players').LocalPlayer.Character.HumanoidRootPart.Position).Magnitude / 3) .. " m."
+                            elseif v.Name == "Chest3" then
+                                Textlb.TextColor3 = Color3.fromRGB(5, 243, 255)
+                                Textlb.Text = "Diamond Chest\n" .. math.round((v.Position - game:GetService('Players').LocalPlayer.Character.HumanoidRootPart.Position).Magnitude / 3) .. " m."
+                            end
+                        else
+                            v["ChestESP"..Number].TextLabel.Text = v.Name .. "\n" .. math.round((v.Position - game:GetService('Players').LocalPlayer.Character.HumanoidRootPart.Position).Magnitude / 3) .. " m."
+                        end
+                    end
+                else
+                    if v:FindFirstChild("ChestESP"..Number) then
+                        v:FindFirstChild("ChestESP"..Number):Destroy()
+                    end
+                end
+            end
+        end)
+    end
+end
+
 function UpdateEspPlayer()
-	if ESPPlayer then
+	if _G.Settings.Configs["Esp Players"] then
 		pcall(function()
 			for i,v in pairs(game.Players:GetPlayers()) do
 				if not isnil(v.Character) then
@@ -313,7 +409,7 @@ end
 function UpdateBfEsp() 
 	for i,v in pairs(game.Workspace:GetChildren()) do
 		pcall(function()
-			if DevilFruitESP then
+			if _G.Settings.Configs["Esp Fruits"] then
 				if string.find(v.Name, "Fruit") then 
 					if not v.Handle:FindFirstChild('NameEsp'..Number) then
 						local bill = Instance.new('BillboardGui',v.Handle)
@@ -346,11 +442,13 @@ function UpdateBfEsp()
 	end
 end
 
-function StopNoClip(Config)
+function NoClip(Config)
 	if Config == false then
 	    if game:GetService("Workspace"):FindFirstChild("TaiFoot") then
 	        game:GetService("Workspace"):FindFirstChild("TaiFoot"):Destroy()
 	    end
+	elseif Config == true then
+		game:GetService("Workspace"):FindFirstChild("TaiFoot")
 	end
 end
 
@@ -395,9 +493,9 @@ function TP2(P1)
 		TweenInfo.new(Distance/Speed, Enum.EasingStyle.Linear),
 		{CFrame = P1}
 	):Play()
-	StopNoClip(true)
+	NoClip(true)
 	wait(Distance/Speed)
-	StopNoClip(false)
+	NoClip(false)
 end
 
 function CheckLevel()
@@ -1776,18 +1874,17 @@ MainTab:AddToggle({
 	Name = "Auto Farm Level",
 	Default = _G.Settings.Main["Auto Farm Level"],
 	Callback = function(Value)
-		_G.Settings.Main["Auto Farm Level"] = Value
-		StopNoClip(_G.Settings.Main["Auto Farm Level"])
-		Magnet = Value
-		
-		if _G.Settings.Main["Auto Farm Level"] and _G.Settings.Configs["Select Weapon"] == "" then
+		if _G.Settings.Configs["Select Weapon"] == "" then
 			OrionLib:MakeNotification({
 				Name = "ULTIMATE HUB",
-				Content = "Loading UI...",
+				Content = "Please Select You Weapon...",
 				Image = "rbxassetid://18107430965",
 				Time = 5
 			})
 		else
+			_G.Settings.Main["Auto Farm Level"] = Value
+			NoClip(_G.Settings.Main["Auto Farm Level"])
+			Magnet = Value
 			Auto_Farm = Value
 			SelectMonster = ""
 			
@@ -1881,7 +1978,8 @@ end
 MainTab:AddDropdown({
 	Name = "Select Boss",
 	Options = Boss,
-	Callback = function(value)
+	Callback = function(Value)
+		_G.Settings.Main["Select Boss"] = Value
 		SelectBoss = Value
 	end,
 })
@@ -1908,14 +2006,87 @@ MainTab:AddButton({
 
 MainTab:AddToggle({
 	Name = "Auto Farm Boss",
-	Default = false,
+	Default = _G.Settings.Main["Auto Farm Boss"],
 	Callback = function(Value)
+		_G.Settings.Main["Auto Farm Boss"] = Value
+		NoClip(_G.Settings.Main["Auto Farm Boss"])
 		AutoFarmBoss = Value
 		BossQuest = Value
 		if Value == false then
 			wait(1)
 			TP(game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame)
 		end
+	end,
+})
+
+local tableMon = {}
+
+if Old_World then
+    tableMon = {
+        "Bandit [Lv. 5]", "Monkey [Lv. 14]", "Gorilla [Lv. 20]", "Pirate [Lv. 35]", "Brute [Lv. 45]",
+        "Desert Bandit [Lv. 60]", "Desert Officer [Lv. 70]", "Snow Bandit [Lv. 90]", "Snowman [Lv. 100]",
+        "Chief Petty Officer [Lv. 120]", "Sky Bandit [Lv. 150]", "Dark Master [Lv. 175]", "Toga Warrior [Lv. 250]",
+        "Gladiator [Lv. 275]", "Military Soldier [Lv. 300]", "Military Spy [Lv. 330]", "Fishman Warrior [Lv. 375]",
+        "Fishman Commando [Lv. 400]", "God's Guard [Lv. 450]", "Shanda [Lv. 475]", "Royal Squad [Lv. 525]",
+        "Royal Soldier [Lv. 550]", "Galley Pirate [Lv. 625]", "Galley Captain [Lv. 650]"
+    }
+elseif New_World then
+    tableMon = {
+        "Raider [Lv. 700]", "Mercenary [Lv. 725]", "Swan Pirate [Lv. 775]", "Factory Staff [Lv. 800]",
+        "Marine Lieutenant [Lv. 875]", "Marine Captain [Lv. 900]", "Zombie [Lv. 950]", "Vampire [Lv. 975]",
+        "Snow Trooper [Lv. 1000]", "Winter Warrior [Lv. 1050]", "Lab Subordinate [Lv. 1100]", "Horned Warrior [Lv. 1125]",
+        "Magma Ninja [Lv. 1175]", "Lava Pirate [Lv. 1200]", "Ship Deckhand [Lv. 1250]", "Ship Engineer [Lv. 1275]",
+        "Ship Steward [Lv. 1300]", "Ship Officer [Lv. 1325]", "Arctic Warrior [Lv. 1350]", "Snow Lurker [Lv. 1375]",
+        "Sea Soldier [Lv. 1425]", "Water Fighter [Lv. 1450]"
+    }
+elseif Three_World then
+    tableMon = {
+        "Pirate Millionaire [Lv. 1500]", "Dragon Crew Warrior [Lv. 1575]", "Dragon Crew Archer [Lv. 1600]",
+        "Female Islander [Lv. 1625]", "Giant Islander [Lv. 1650]", "Marine Commodore [Lv. 1700]",
+        "Marine Rear Admiral [Lv. 1725]", "Fishman Raider [Lv. 1775]", "Fishman Captain [Lv. 1800]",
+        "Forest Pirate [Lv. 1825]", "Mythological Pirate [Lv. 1850]", "Jungle Pirate [Lv. 1900]",
+        "Musketeer Pirate [Lv. 1925]", "Reborn Skeleton [Lv. 1975]", "Living Zombie [Lv. 2000]",
+        "Demonic Soul [Lv. 2025]", "Posessed Mummy [Lv. 2050]", "Peanut Scout [Lv. 2075]",
+        "Ice Cream Chef [Lv. 2125]", "Ice Cream Commander [Lv. 2150]", "Cookie Crafter [Lv. 2200]",
+        "Cake Guard [Lv. 2225]", "Baking Staff [Lv. 2250]", "Head Baker [Lv. 2275]"
+    }
+end
+
+MainTab:AddDropdown({
+    Name = "Select Monster",
+    Options = tableMon,
+    Callback = function(Value)
+        SelectMonster = Value
+        if _G.Settings.Configs["AutoSave"] then
+            SaveSettings()
+        end
+    end,
+})
+
+MainTab:AddToggle({
+	Name = "Auto Farm Monster",
+	Default = _G.Settings.Main["Auto Farm Monster"],
+	Callback = function(Value)
+
+	if SelectMonster == "" then
+		OrionLib:MakeNotification({
+			Name = "ULTIMATE HUB",
+			Content = "Please Select You Monster...",
+			Image = "rbxassetid://18107430965",
+			Time = 5
+		})
+	else if _G.Settings.Configs["Select Weapon"] == "" then
+		OrionLib:MakeNotification({
+			Name = "ULTIMATE HUB",
+			Content = "Please Select You Weapon...",
+			Image = "rbxassetid://18107430965",
+			Time = 5
+		})
+	else
+		_G.Settings.Main["Auto Farm Monster"] = Value
+		NoClip(_G.Settings.Main["Auto Farm Monster"])
+		wait(2)
+		TP(game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame)
 	end,
 })
 
@@ -1927,6 +2098,7 @@ MainTab:AddToggle({
 	Name = "Auto Factory",
 	Default = _G.Settings.Main["Auto Factory"],
 	Callback = function(Value)
+		_G.Settings.Main["Auto Factory"] = Value
 		Factory = Value
 		if Value == false then
 			wait(1)
@@ -1942,8 +2114,9 @@ MainTab:AddToggle({
 if New_World then
 	MainTab:AddToggle({
 		Name = "Auto Third Sea",
-		Default = _G.AutoThirdSea,
+		Default = _G.Settings.Main["Auto Sea 2"],
 		Callback = function(Value)
+			_G.Settings.Main["Auto Sea 2"] = Value
 			ReadyThirdSea = Value
 			TP(game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame)
 			if ReadyThirdSea and game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BartiloQuestProgress", "Bartilo") ~= 3 then
@@ -1966,8 +2139,9 @@ end
 if Old_World then
 	MainTab:AddToggle({
 		Name = "Auto New World",
-		Default = _G.AutoNewWorld,
+		Default = _G.Settings.Main["Auto Sea 3"],
 		Callback = function(Value)
+			_G.Settings.Main["Auto Sea 3"] = Value
 			Auto_NewWorld = Value
 			if Value == false then
 				wait(1)
@@ -1981,6 +2155,490 @@ if Old_World then
 	})
 end
 
+-- Tab Raid
+if not Old_World then
+    local RaidTab = Window:MakeTab({
+        Name = "Raid Menu",
+        Icon = "rbxassetid://7251993295",
+        PremiumOnly = false
+    })
+
+    local RaidSection = RaidTab:AddSection({
+        Name = "Raid Teleport"
+    })
+elseif New_World then
+	RaidTab:AddButton({
+		Name = "Teleport To Lab",
+		Callback = function()
+			TP2(CFrame.new(-6438.73535, 250.645355, -4501.50684))
+		end
+	})
+elseif Three_World then
+	RaidTab:AddButton({
+		Name = "Teleport To Lab",
+		Callback = function()
+			TP2(CFrame.new(-5057.146484375, 314.54132080078, -2934.7995605469))
+		end
+	})
+end
+
+local RaidSection = RaidTab:AddSection({
+	Name = "Raid Menu"
+})
+
+RaidTab:AddButton({
+	Name = "Auto Raid",
+	Callback = function(Value)
+		if _G.Settings.Raids["Auto Buy Chip"] then
+			_G.Settings.Raids["Auto Raids"] = Value
+		else
+			OrionLib:MakeNotification({
+				Name = "ULTIMATE HUB",
+				Content = "Please Enable Auto Buy Chip...",
+				Image = "rbxassetid://18107430965",
+				Time = 5
+			})
+		end
+		
+		if _G.Settings.Configs["AutoSave"] then
+	      SaveSettings()
+	    end
+	end,
+})
+
+RaidTab:AddButton({
+	Name = "Auto Buy Chip",
+	Callback = function(Value)
+		_G.Settings.Raids["Auto Buy Chip"] = Value
+
+		if _G.Settings.Configs["AutoSave"] then
+	      SaveSettings()
+	    end
+	end,
+})
+
+RaidTab:AddButton({
+	Name = "Auto Kill Aura",
+	Callback = function(Value)
+		_G.Settings.Raids["Kill Aura"] = Value
+
+		if _G.Settings.Configs["AutoSave"] then
+	      SaveSettings()
+	    end
+	end,
+})
+
+RaidTab:AddButton({
+	Name = "Auto Next Island",
+	Callback = function(Value)
+		_G.Settings.Raids["Auto Next Place"] = Value
+
+		if _G.Settings.Configs["AutoSave"] then
+	      SaveSettings()
+	    end
+	end,
+})
+
+RaidTab:AddButton({
+	Name = "Auto Awaken",
+	Callback = function(Value)
+		_G.Settings.Raids["Auto Awakened"] = Value
+
+		if _G.Settings.Configs["AutoSave"] then
+	      SaveSettings()
+	    end
+	end,
+})
+
+spawn(function()
+	pcall(function()
+		while wait() do
+			if _G.Settings.Raids["Auto Buy Chip"] then
+				if not game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Special Microchip") or not game:GetService("Players").LocalPlayer.Character:FindFirstChild("Special Microchip") then
+					if not game:GetService("Workspace")["_WorldOrigin"].Locations:FindFirstChild("Island 1") then
+						game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("RaidsNpc", "Select", _G.SelectRaid)
+					end
+				end
+			end
+		end
+	end)
+end)
+
+spawn(function()
+	while wait(.1) do
+		if _G.Settings.Raids["Auto Raids"] or RaidSuperhuman then
+			pcall(function()
+				if game:GetService("Players")["LocalPlayer"].PlayerGui.Main.Timer.Visible == false then
+					if AutoFullySuperhuman then
+						if not game:GetService("Workspace")["_WorldOrigin"].Locations:FindFirstChild("Island 1") and not game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Special Microchip") or not game:GetService("Players").LocalPlayer.Character:FindFirstChild("Special Microchip") then
+							for i,v in pairs(game:GetService("Players").LocalPlayer.Backpack:GetChildren()) do
+								if not string.find(v.Name, "Fruit") then
+									game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("Cousin","Buy")
+								end
+							end
+						end
+					end
+					if not game:GetService("Workspace")["_WorldOrigin"].Locations:FindFirstChild("Island 1") then
+						game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("RaidsNpc", "Select", _G.SelectRaid)
+					end
+					if game:GetService("Workspace")["_WorldOrigin"].Locations:FindFirstChild("Island 1") then
+						game:GetService("StarterGui"):SetCore("SendNotification",
+							{
+								Title = "Auto Raid",
+								Text = "Have Some People in Raid",
+								Icon = "",
+								Duration = 99999
+							}
+						)
+						wait(4)
+					end
+					if not game:GetService("Workspace")["_WorldOrigin"].Locations:FindFirstChild("Island 1") and game.Players.LocalPlayer.Backpack:FindFirstChild("Special Microchip") orgame.Players.LocalPlayer.Character:FindFirstChild("Special Microchip")then
+						if New_World then
+							fireclickdetector(game:GetService("Workspace").Map.CircleIsland.RaidSummon2.Button.Main.ClickDetector)
+						elseif Three_World then
+							fireclickdetector(game:GetService("Workspace").Map["Boat Castle"].RaidSummon2.Button.Main.ClickDetector)
+						end
+					end
+				end
+			end)
+		end
+	end
+end)
+
+spawn(function()
+	pcall(function()
+		while wait(.1) do
+			if _G.Settings.Raids["Auto Awakened"] then
+				local args = {
+					[1] = "Awakener",
+					[2] = "Check"
+				}
+				game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+				local args = {
+					[1] = "Awakener",
+					[2] = "Awaken"
+				}
+				game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+			end
+		end
+	end)
+end)
+
+spawn(function()
+	while wait() do
+		if _G.Settings.Raids["Kill Aura"] or _G.Settings.Raids["Auto Raids"] or RaidSuperhuman then
+			for i,v in pairs(game.Workspace.Enemies:GetDescendants()) do
+				if v:FindFirstChild("Humanoid") and v:FindFirstChild("HumanoidRootPart") and v.Humanoid.Health > 0 then
+					pcall(function()
+						repeat wait(.1)
+						sethiddenproperty(game.Players.LocalPlayer, "SimulationRadius", math.huge)
+						v.Humanoid.Health = 0
+						v.HumanoidRootPart.CanCollide = false
+						v.HumanoidRootPart.Size = Vector3.new(50,50,50)
+						v.HumanoidRootPart.Transparency = 0.8
+						until not _G.Settings.Raids["Kill Aura"] or not _G.Settings.Raids["Auto Raids"] or not RaidSuperhuman or not v.Parent or v.Humanoid.Health <= 0
+					end)
+				end
+			end
+		end
+	end
+end)
+
+spawn(function()
+	pcall(function()
+		while game:GetService("RunService").Heartbeat:wait() do
+			if _G.Settings.Raids["Auto Next Place"] or RaidSuperhuman or _G.Settings.Raids["Auto Raids"] then
+				if game:GetService("Players")["LocalPlayer"].PlayerGui.Main.Timer.Visible == true and game:GetService("Workspace")["_WorldOrigin"].Locations:FindFirstChild("Island 5") or game:GetService("Workspace")["_WorldOrigin"].Locations:FindFirstChild("Island 4") or game:GetService("Workspace")["_WorldOrigin"].Locations:FindFirstChild("Island 3") or game:GetService("Workspace")["_WorldOrigin"].Locations:FindFirstChild("Island 2") or game:GetService("Workspace")["_WorldOrigin"].Locations:FindFirstChild("Island 1") then
+					if game:GetService("Workspace")["_WorldOrigin"].Locations:FindFirstChild("Island 5") then
+						TP(game:GetService("Workspace")["_WorldOrigin"].Locations["Island 5"].CFrame*CFrame.new(0,80,0))
+					elseif game:GetService("Workspace")["_WorldOrigin"].Locations:FindFirstChild("Island 4") then
+						TP(game:GetService("Workspace")["_WorldOrigin"].Locations["Island 4"].CFrame*CFrame.new(0,80,0))
+					elseif game:GetService("Workspace")["_WorldOrigin"].Locations:FindFirstChild("Island 3") then
+						TP(game:GetService("Workspace")["_WorldOrigin"].Locations["Island 3"].CFrame*CFrame.new(0,80,0))
+					elseif game:GetService("Workspace")["_WorldOrigin"].Locations:FindFirstChild("Island 2") then
+						TP(game:GetService("Workspace")["_WorldOrigin"].Locations["Island 2"].CFrame*CFrame.new(0,80,0))
+					elseif game:GetService("Workspace")["_WorldOrigin"].Locations:FindFirstChild("Island 1") then
+						TP(game:GetService("Workspace")["_WorldOrigin"].Locations["Island 1"].CFrame*CFrame.new(0,80,0))
+					end
+					elseif New_World then
+						TP(CFrame.new(-6438.73535, 250.645355, -4501.50684))
+					elseif Three_World then
+						TP(CFrame.new(-5057.146484375, 314.54132080078, -2934.7995605469))
+					end
+				end
+			end
+		end)
+	end)
+end
+
+-- Tab Shop
+local ShopTab = Window:MakeTab({
+	Name = "Shop Menu",
+	Icon = "rbxassetid://7294901968",
+	PremiumOnly = false
+})
+
+local ShopSection = ShopTab:AddSection({
+	Name = "Haki Shop"
+})
+
+ShopTab:AddButton({
+    Name = "Buy Skyjump",
+    Callback = function()
+        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuyHaki","Geppo")
+    end
+})
+
+ShopTab:AddButton({
+    Name = "Buy Buso Haki",
+    Callback = function()
+        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuyHaki","Buso")
+    end
+})
+
+ShopTab:AddButton({
+    Name = "Buy Soru",
+    Callback = function()
+        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuyHaki","Soru")
+    end
+})
+
+ShopTab:AddButton({
+    Name = "Buy Ken",
+    Callback = function()
+        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("KenTalk","Buy")
+    end
+})
+
+local ShopSection = ShopTab:AddSection({
+	Name = "Fragment Shop"
+})
+
+ShopTab:AddButton({
+    Name = "Refund Stat [2500 F]",
+    Callback = function()
+        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuyHaki","Buso")
+    end
+})
+
+ShopTab:AddButton({
+    Name = "Reroll Race [3000 F]",
+    Callback = function()
+        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BlackbeardReward","Reroll","1")
+        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BlackbeardReward","Reroll","2")
+    end
+})
+
+local ShopSection = ShopTab:AddSection({
+	Name = "Fighting Style"
+})
+
+ShopTab:AddButton({
+    Name = "Black Leg",
+    Callback = function()
+        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuyBlackLeg")
+    end
+})
+
+ShopTab:AddButton({
+    Name = "Electro",
+    Callback = function()
+        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuyElectro")
+    end
+})
+
+ShopTab:AddButton({
+    Name = "Fishman Karate",
+    Callback = function()
+        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuyFishmanKarate")
+    end
+})
+
+ShopTab:AddButton({
+    Name = "Dragon Claw",
+    Callback = function()
+        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BlackbeardReward", "DragonClaw", "1")
+        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BlackbeardReward", "DragonClaw", "2")
+    end
+})
+
+ShopTab:AddButton({
+    Name = "Superhuman",
+    Callback = function()
+        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuySuperhuman")
+    end
+})
+
+ShopTab:AddButton({
+    Name = "Death Step",
+    Callback = function()
+        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuyDeathStep")
+    end
+})
+
+ShopTab:AddButton({
+    Name = "Sharkman Karate",
+    Callback = function()
+        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuySharkmanKarate", true)
+        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuySharkmanKarate")
+    end
+})
+
+ShopTab:AddButton({
+    Name = "Electric Claw",
+    Callback = function()
+        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuyElectricClaw", true)
+        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuyElectricClaw")
+    end
+})
+
+ShopTab:AddButton({
+    Name = "Dragon Talon",
+    Callback = function()
+        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuyDragonTalon", true)
+        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuyDragonTalon")
+    end
+})
+
+local ShopSection = ShopTab:AddSection({
+	Name = "Sword Shop"
+})
+
+ShopTab:AddButton({
+    Name = "Katana",
+    Callback = function()
+        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuyItem", "Katana")
+    end
+})
+
+ShopTab:AddButton({
+    Name = "Cutlass",
+    Callback = function()
+        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuyItem", "Cutlass")
+    end
+})
+
+ShopTab:AddButton({
+    Name = "Duel Katana",
+    Callback = function()
+        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuyItem", "Duel Katana")
+    end
+})
+
+ShopTab:AddButton({
+    Name = "Iron Mace",
+    Callback = function()
+        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuyItem", "Iron Mace")
+    end
+})
+
+ShopTab:AddButton({
+    Name = "Pipe",
+    Callback = function()
+        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuyItem", "Pipe")
+    end
+})
+
+ShopTab:AddButton({
+    Name = "Triple Katana",
+    Callback = function()
+        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuyItem", "Triple Katana")
+    end
+})
+
+ShopTab:AddButton({
+    Name = "Dual-Headed Blade",
+    Callback = function()
+        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuyItem", "Dual-Headed Blade")
+    end
+})
+
+ShopTab:AddButton({
+    Name = "Bisento",
+    Callback = function()
+        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuyItem", "Bisento")
+    end
+})
+
+ShopTab:AddButton({
+    Name = "Soul Cane",
+    Callback = function()
+        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuyItem", "Soul Cane")
+    end
+})
+
+local ShopSection = ShopTab:AddSection({
+	Name = "Gun Shop"
+})
+
+ShopTab:AddButton({
+    Name = "Slingshot",
+    Callback = function()
+        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuyItem", "Slingshot")
+    end
+})
+
+ShopTab:AddButton({
+    Name = "Musket",
+    Callback = function()
+        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuyItem", "Musket")
+    end
+})
+
+ShopTab:AddButton({
+    Name = "Flintlock",
+    Callback = function()
+        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuyItem", "Flintlock")
+    end
+})
+
+ShopTab:AddButton({
+    Name = "Refined Flintlock",
+    Callback = function()
+        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuyItem", "Refined Flintlock")
+    end
+})
+
+ShopTab:AddButton({
+    Name = "Cannon",
+    Callback = function()
+        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuyItem", "Cannon")
+    end
+})
+
+ShopTab:AddButton({
+    Name = "Kabucha",
+    Callback = function()
+        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BlackbeardReward", "Slingshot", "1")
+        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BlackbeardReward", "Slingshot", "2")
+    end
+})
+
+local ShopSection = ShopTab:AddSection({
+	Name = "Accessory Shop"
+})
+
+ShopTab:AddButton({
+    Name = "Black Cape",
+    Callback = function()
+        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuyItem", "Black Cape")
+    end
+})
+
+ShopTab:AddButton({
+    Name = "Tomoe Ring",
+    Callback = function()
+        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuyItem", "Tomoe Ring")
+    end
+})
+
+ShopTab:AddButton({
+    Name = "Swordsman Hat",
+    Callback = function()
+        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuyItem", "Swordsman Hat")
+    end
+})
+
 -- Tab Fruits
 local FruitTab = Window:MakeTab({
 	Name = "Fruit Menu",
@@ -1992,27 +2650,27 @@ local FruitSection = FruitTab:AddSection({
 	Name = "Fruit Teleport"
 })
 
-if playerTP.Humanoid.Health > 1 then
-  if _G.Settings.Configs["AutoSave"] then
-    UIS.InputBegan:Connect(function(input)
-        if input.KeyCode == Enum.KeyCode.K then
-            local powerLocations = game.Workspace.PowerSpawn.SpawnedPower:FindFirstChildOfClass("Tool")
-            playerTP:MoveTo(powerLocations.Handle.Position)
-        end
-    end)
-  end
-end
-
 FruitTab:AddToggle({
 	Name = "Auto Teleport To Fruit",
-	Default = false,
+	Default = _G.Settings.Fruits["Teleport Fruits"],
 	Callback = function(Value)
 	  _G.Settings.Fruits["Teleport Fruits"] = Value
 	  if _G.Settings.Configs["AutoSave"] then
-      SaveSettings()
-    end
+	      SaveSettings()
+	    end
 	end,
 })
+
+if playerTP.Humanoid.Health > 1 then
+    if _G.Settings.Fruits["Teleport Fruits"] then
+      UIS.InputBegan:Connect(function(input)
+          if input.KeyCode == Enum.KeyCode.K then
+              local powerLocations = game.Workspace.PowerSpawn.SpawnedPower:FindFirstChildOfClass("Tool")
+              playerTP:MoveTo(powerLocations.Handle.Position)
+          end
+      end)
+    end
+  end
 
 -- Tab Tp
 local TpTab = Window:MakeTab({
@@ -2171,6 +2829,81 @@ elseif Three_World then
     end)
 end
 
+-- Tab Esp
+local EspTab = Window:MakeTab({
+	Name = "Esp Menu",
+	Icon = "rbxassetid://7251993295",
+	PremiumOnly = false
+})
+
+local EspSection = EspTab:AddSection({
+	Name = "Esp Configuration"
+})
+
+EspTab:AddToggle({
+	Name = "Esp Players",
+	Default = _G.Settings.Configs["Esp Players"],
+	Callback = function(Value)
+		_G.Settings.Configs["Esp Players"] = Value
+		wait(1)
+		while _G.Settings.Configs["Esp Players"] do wait()
+			UpdateEspPlayer()
+		end
+
+		if _G.Settings.Configs["AutoSave"] then
+			SaveSettings()
+		end
+	end
+})
+
+EspTab:AddToggle({
+	Name = "Esp Fruits",
+	Default = _G.Settings.Configs["Esp Fruits"],
+	Callback = function(Value)
+		_G.Settings.Configs["Esp Fruits"] = Value
+		wait(1)
+		while _G.Settings.Configs["Esp Fruits"] do wait()
+			UpdateBfEsp()
+		end
+
+		if _G.Settings.Configs["AutoSave"] then
+			SaveSettings()
+		end
+	end
+})
+
+EspTab:AddToggle({
+	Name = "Esp Chest",
+	Default = _G.Settings.Configs["Esp Chest"],
+	Callback = function(Value)
+		_G.Settings.Configs["Esp Chest"] = Value
+		wait(1)
+		while _G.Settings.Configs["Esp Chest"] do wait()
+			UpdateChest()
+		end
+		
+		if _G.Settings.Configs["AutoSave"] then
+			SaveSettings()
+		end
+	end
+})
+
+EspTab:AddToggle({
+	Name = "Esp Flower",
+	Default = _G.Settings.Configs["Esp Flower"],
+	Callback = function(Value)
+		_G.Settings.Configs["Esp Flower"] = Value
+		wait(1)
+		while _G.Settings.Configs["Esp Flower"] do wait()
+			UpdateFlower()
+		end
+		
+		if _G.Settings.Configs["AutoSave"] then
+			SaveSettings()
+		end
+	end
+})
+
 -- Tab Setting
 local SettingsTab = Window:MakeTab({
 	Name = "Settings",
@@ -2179,12 +2912,12 @@ local SettingsTab = Window:MakeTab({
 })
 
 local SettingsSection = SettingsTab:AddSection({
-	Name = "Configuration"
+	Name = "Script Configuration"
 })
 
 SettingsTab:AddToggle({
 	Name = "Auto Save Config",
-	Default = false,
+	Default = _G.Settings.Configs["AutoSave"],
 	Callback = function(Value)
     _G.Settings.Configs["AutoSave"] = Value
 		SaveSettings()
@@ -2290,7 +3023,7 @@ SettingsTab:AddDropdown({
 
 SettingsTab:AddToggle({
 	Name = "Fast Attack",
-	Default = false,
+	Default = _G.Settings.Configs["Fast Attack"],
 	Callback = function(Value)
 		_G.Settings.Configs["Fast Attack"] = Value
 		if _G.Settings.Configs["AutoSave"] then
