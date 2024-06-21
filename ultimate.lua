@@ -2200,232 +2200,244 @@ local function main()
 
     -- Tab Raid
     if not Old_World then
-        local RaidTab = Window:MakeTab({
-            Name = "Raid Menu",
-            Icon = "rbxassetid://7251993295",
-            PremiumOnly = false
-        })
+        if New_World then
+            RaidTab = Window:MakeTab({
+                Name = "Raid Menu",
+                Icon = "rbxassetid://7251993295",
+                PremiumOnly = false
+            })
+        elseif Three_World then
+            RaidTab = Window:MakeTab({
+                Name = "Raid Menu",
+                Icon = "rbxassetid://7251993295",
+                PremiumOnly = false
+            })
+        end
 
-        local RaidSection = RaidTab:AddSection({
-            Name = "Raid Teleport"
-        })
-    elseif New_World then
-        RaidTab:AddButton({
-            Name = "Teleport To Lab",
-            Callback = function()
-                TP2(CFrame.new(-6438.73535, 250.645355, -4501.50684))
-            end
-        })
-    elseif Three_World then
-        RaidTab:AddButton({
-            Name = "Teleport To Lab",
-            Callback = function()
-                TP2(CFrame.new(-5057.146484375, 314.54132080078, -2934.7995605469))
-            end
-        })
-    end
+        if New_World then
+            local RaidSection = RaidTab:AddSection({
+                Name = "Raid Teleport"
+            })
 
-    local RaidSection = RaidTab:AddSection({
-        Name = "Raid Menu"
-    })
-
-    RaidTab:AddButton({
-        Name = "Auto Raid",
-        Callback = function(Value)
-            if _G.Settings.Raids["Auto Buy Chip"] then
-                _G.Settings.Raids["Auto Raids"] = Value
-            else
-                OrionLib:MakeNotification({
-                    Name = "ULTIMATE HUB",
-                    Content = "Please Enable Auto Buy Chip...",
-                    Image = "rbxassetid://18107430965",
-                    Time = 5
-                })
-            end
-            
-            if _G.Settings.Configs["AutoSave"] then
-            SaveSettings()
-            end
-        end,
-    })
-
-    RaidTab:AddButton({
-        Name = "Auto Buy Chip",
-        Callback = function(Value)
-            _G.Settings.Raids["Auto Buy Chip"] = Value
-
-            if _G.Settings.Configs["AutoSave"] then
-            SaveSettings()
-            end
-        end,
-    })
-
-    RaidTab:AddButton({
-        Name = "Auto Kill Aura",
-        Callback = function(Value)
-            _G.Settings.Raids["Kill Aura"] = Value
-
-            if _G.Settings.Configs["AutoSave"] then
-            SaveSettings()
-            end
-        end,
-    })
-
-    RaidTab:AddButton({
-        Name = "Auto Next Island",
-        Callback = function(Value)
-            _G.Settings.Raids["Auto Next Place"] = Value
-
-            if _G.Settings.Configs["AutoSave"] then
-            SaveSettings()
-            end
-        end,
-    })
-
-    RaidTab:AddButton({
-        Name = "Auto Awaken",
-        Callback = function(Value)
-            _G.Settings.Raids["Auto Awakened"] = Value
-
-            if _G.Settings.Configs["AutoSave"] then
-            SaveSettings()
-            end
-        end,
-    })
-
-    spawn(function()
-        pcall(function()
-            while wait() do
-                if _G.Settings.Raids["Auto Buy Chip"] then
-                    if not game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Special Microchip") or not game:GetService("Players").LocalPlayer.Character:FindFirstChild("Special Microchip") then
-                        if not game:GetService("Workspace")["_WorldOrigin"].Locations:FindFirstChild("Island 1") then
-                            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("RaidsNpc", "Select", _G.SelectRaid)
-                        end
-                    end
+            RaidTab:AddButton({
+                Name = "Teleport To Lab",
+                Callback = function()
+                    TP2(CFrame.new(-6438.73535, 250.645355, -4501.50684))
                 end
-            end
-        end)
-    end)
+            })
+        elseif Three_World then
+            RaidTab:AddButton({
+                Name = "Teleport To Lab",
+                Callback = function()
+                    TP2(CFrame.new(-5057.146484375, 314.54132080078, -2934.7995605469))
+                end
+            })
+        end
 
-    spawn(function()
-        while wait(0.1) do
-            if _G.Settings.Raids["Auto Raids"] or RaidSuperhuman then
-                pcall(function()
+        local RaidMenuSection = RaidTab:AddSection({
+            Name = "Raid Menu"
+        })
+
+        RaidTab:AddButton({
+            Name = "Auto Raid",
+            Callback = function(Value)
+                if _G.Settings.Raids["Auto Buy Chip"] then
+                    _G.Settings.Raids["Auto Raids"] = Value
+                else
+                    OrionLib:MakeNotification({
+                        Name = "ULTIMATE HUB",
+                        Content = "Please Enable Auto Buy Chip...",
+                        Image = "rbxassetid://18107430965",
+                        Time = 5
+                    })
+                end
+                
+                if _G.Settings.Configs["AutoSave"] then
+                    SaveSettings()
+                end
+            end,
+        })
+
+        RaidTab:AddButton({
+            Name = "Auto Buy Chip",
+            Callback = function(Value)
+                _G.Settings.Raids["Auto Buy Chip"] = Value
+
+                if _G.Settings.Configs["AutoSave"] then
+                    SaveSettings()
+                end
+            end,
+        })
+
+        RaidTab:AddButton({
+            Name = "Auto Kill Aura",
+            Callback = function(Value)
+                _G.Settings.Raids["Kill Aura"] = Value
+
+                if _G.Settings.Configs["AutoSave"] then
+                    SaveSettings()
+                end
+            end,
+        })
+
+        RaidTab:AddButton({
+            Name = "Auto Next Island",
+            Callback = function(Value)
+                _G.Settings.Raids["Auto Next Place"] = Value
+
+                if _G.Settings.Configs["AutoSave"] then
+                    SaveSettings()
+                end
+            end,
+        })
+
+        RaidTab:AddButton({
+            Name = "Auto Awaken",
+            Callback = function(Value)
+                _G.Settings.Raids["Auto Awakened"] = Value
+
+                if _G.Settings.Configs["AutoSave"] then
+                    SaveSettings()
+                end
+            end,
+        })
+
+        spawn(function()
+            while wait(0.1) do
+                if _G.Settings.Raids["Auto Buy Chip"] then
                     local player = game:GetService("Players").LocalPlayer
-                    local playerGui = player.PlayerGui
+                    local backpack = player.Backpack
+                    local character = player.Character
                     local workspace = game:GetService("Workspace")
                     local replicatedStorage = game:GetService("ReplicatedStorage")
 
-                    if not playerGui.Main.Timer.Visible then
-                        if AutoFullySuperhuman then
-                            local backpack = player.Backpack
-                            if not workspace["_WorldOrigin"].Locations:FindFirstChild("Island 1") and not backpack:FindFirstChild("Special Microchip") and not player.Character:FindFirstChild("Special Microchip") then
-                                for _, v in pairs(backpack:GetChildren()) do
-                                    if not string.find(v.Name, "Fruit") then
-                                        replicatedStorage.Remotes.CommF_:InvokeServer("Cousin", "Buy")
+                    if not backpack:FindFirstChild("Special Microchip") and not character:FindFirstChild("Special Microchip") and not workspace["_WorldOrigin"].Locations:FindFirstChild("Island 1") then
+                        replicatedStorage.Remotes.CommF_:InvokeServer("RaidsNpc", "Select", _G.SelectRaid)
+                    end
+                end
+            end
+        end)
+
+        spawn(function()
+            while wait() do
+                if _G.Settings.Raids["Auto Raids"] or RaidSuperhuman then
+                    pcall(function()
+                        local player = game:GetService("Players").LocalPlayer
+                        local playerGui = player.PlayerGui
+                        local workspace = game:GetService("Workspace")
+                        local replicatedStorage = game:GetService("ReplicatedStorage")
+
+                        if not playerGui.Main.Timer.Visible then
+                            if AutoFullySuperhuman then
+                                local backpack = player.Backpack
+                                if not workspace["_WorldOrigin"].Locations:FindFirstChild("Island 1") and not backpack:FindFirstChild("Special Microchip") and not player.Character:FindFirstChild("Special Microchip") then
+                                    for _, v in pairs(backpack:GetChildren()) do
+                                        if not string.find(v.Name, "Fruit") then
+                                            replicatedStorage.Remotes.CommF_:InvokeServer("Cousin", "Buy")
+                                        end
                                     end
                                 end
                             end
-                        end
 
-                        if not workspace["_WorldOrigin"].Locations:FindFirstChild("Island 1") then
-                            replicatedStorage.Remotes.CommF_:InvokeServer("RaidsNpc", "Select", _G.SelectRaid)
-                        end
+                            if not workspace["_WorldOrigin"].Locations:FindFirstChild("Island 1") then
+                                replicatedStorage.Remotes.CommF_:InvokeServer("RaidsNpc", "Select", _G.SelectRaid)
+                            end
 
-                        if workspace["_WorldOrigin"].Locations:FindFirstChild("Island 1") then
-                            game:GetService("StarterGui"):SetCore("SendNotification", {
-                                Title = "Auto Raid",
-                                Text = "Have Some People in Raid",
-                                Icon = "",
-                                Duration = 99999
-                            })
-                            wait(4)
-                        end
+                            if workspace["_WorldOrigin"].Locations:FindFirstChild("Island 1") then
+                                game:GetService("StarterGui"):SetCore("SendNotification", {
+                                    Title = "Auto Raid",
+                                    Text = "Have Some People in Raid",
+                                    Icon = "",
+                                    Duration = 99999
+                                })
+                                wait(4)
+                            end
 
-                        if not workspace["_WorldOrigin"].Locations:FindFirstChild("Island 1") and (player.Backpack:FindFirstChild("Special Microchip") or player.Character:FindFirstChild("Special Microchip")) then
-                            if New_World then
-                                fireclickdetector(workspace.Map.CircleIsland.RaidSummon2.Button.Main.ClickDetector)
-                            elseif Three_World then
-                                fireclickdetector(workspace.Map["Boat Castle"].RaidSummon2.Button.Main.ClickDetector)
+                            if not workspace["_WorldOrigin"].Locations:FindFirstChild("Island 1") and (player.Backpack:FindFirstChild("Special Microchip") or player.Character:FindFirstChild("Special Microchip")) then
+                                if New_World then
+                                    fireclickdetector(workspace.Map.CircleIsland.RaidSummon2.Button.Main.ClickDetector)
+                                elseif Three_World then
+                                    fireclickdetector(workspace.Map["Boat Castle"].RaidSummon2.Button.Main.ClickDetector)
+                                end
                             end
                         end
-                    end
-                end)
+                    end)
+                end
             end
-        end
-    end)
+        end)
 
-    spawn(function()
-        pcall(function()
-            while wait(.1) do
+        spawn(function()
+            while wait(0.1) do
                 if _G.Settings.Raids["Auto Awakened"] then
-                    local args = {
-                        [1] = "Awakener",
-                        [2] = "Check"
-                    }
-                    game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
-                    local args = {
-                        [1] = "Awakener",
-                        [2] = "Awaken"
-                    }
-                    game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+                    pcall(function()
+                        local args = {
+                            [1] = "Awakener",
+                            [2] = "Check"
+                        }
+                        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+                        local args = {
+                            [1] = "Awakener",
+                            [2] = "Awaken"
+                        }
+                        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+                    end)
                 end
             end
         end)
-    end)
 
-    spawn(function()
-        while wait() do
-            if _G.Settings.Raids["Kill Aura"] or _G.Settings.Raids["Auto Raids"] or RaidSuperhuman then
-                for i,v in pairs(game.Workspace.Enemies:GetDescendants()) do
-                    if v:FindFirstChild("Humanoid") and v:FindFirstChild("HumanoidRootPart") and v.Humanoid.Health > 0 then
-                        pcall(function()
-                            repeat wait(.1)
-                            sethiddenproperty(game.Players.LocalPlayer, "SimulationRadius", math.huge)
-                            v.Humanoid.Health = 0
-                            v.HumanoidRootPart.CanCollide = false
-                            v.HumanoidRootPart.Size = Vector3.new(50,50,50)
-                            v.HumanoidRootPart.Transparency = 0.8
-                            until not _G.Settings.Raids["Kill Aura"] or not _G.Settings.Raids["Auto Raids"] or not RaidSuperhuman or not v.Parent or v.Humanoid.Health <= 0
-                        end)
+        spawn(function()
+            while wait() do
+                if _G.Settings.Raids["Kill Aura"] or _G.Settings.Raids["Auto Raids"] or RaidSuperhuman then
+                    for _, v in pairs(game.Workspace.Enemies:GetDescendants()) do
+                        if v:IsA("Humanoid") and v.Health > 0 then
+                            pcall(function()
+                                repeat
+                                    wait(0.1)
+                                    sethiddenproperty(game.Players.LocalPlayer, "SimulationRadius", math.huge)
+                                    v.Health = 0
+                                    v.Parent.CanCollide = false
+                                    v.Parent.Size = Vector3.new(50, 50, 50)
+                                    v.Parent.Transparency = 0.8
+                                until not _G.Settings.Raids["Kill Aura"] or not _G.Settings.Raids["Auto Raids"] or not RaidSuperhuman or not v.Parent or v.Health <= 0
+                            end)
+                        end
                     end
                 end
             end
-        end
-    end)
+        end)
 
-    spawn(function()
-        pcall(function()
-            while game:GetService("RunService").Heartbeat:Wait() do
+        spawn(function()
+            while wait() do
                 if _G.Settings.Raids["Auto Next Place"] or RaidSuperhuman or _G.Settings.Raids["Auto Raids"] then
-                    local player = game:GetService("Players").LocalPlayer
-                    local playerGui = player.PlayerGui
-                    local workspace = game:GetService("Workspace")
-                    local locations = workspace["_WorldOrigin"].Locations
+                    pcall(function()
+                        local playerGui = game:GetService("Players").LocalPlayer.PlayerGui
+                        local workspace = game:GetService("Workspace")
+                        local locations = workspace["_WorldOrigin"].Locations
 
-                    if playerGui.Main.Timer.Visible == true then
-                        if locations:FindFirstChild("Island 5") then
-                            TP(locations["Island 5"].CFrame * CFrame.new(0, 80, 0))
-                        elseif locations:FindFirstChild("Island 4") then
-                            TP(locations["Island 4"].CFrame * CFrame.new(0, 80, 0))
-                        elseif locations:FindFirstChild("Island 3") then
-                            TP(locations["Island 3"].CFrame * CFrame.new(0, 80, 0))
-                        elseif locations:FindFirstChild("Island 2") then
-                            TP(locations["Island 2"].CFrame * CFrame.new(0, 80, 0))
-                        elseif locations:FindFirstChild("Island 1") then
-                            TP(locations["Island 1"].CFrame * CFrame.new(0, 80, 0))
+                        if playerGui.Main.Timer.Visible then
+                            if locations:FindFirstChild("Island 5") then
+                                TP(locations["Island 5"].CFrame * CFrame.new(0, 80, 0))
+                            elseif locations:FindFirstChild("Island 4") then
+                                TP(locations["Island 4"].CFrame * CFrame.new(0, 80, 0))
+                            elseif locations:FindFirstChild("Island 3") then
+                                TP(locations["Island 3"].CFrame * CFrame.new(0, 80, 0))
+                            elseif locations:FindFirstChild("Island 2") then
+                                TP(locations["Island 2"].CFrame * CFrame.new(0, 80, 0))
+                            elseif locations:FindFirstChild("Island 1") then
+                                TP(locations["Island 1"].CFrame * CFrame.new(0, 80, 0))
+                            end
+                        else
+                            if New_World then
+                                TP(CFrame.new(-6438.73535, 250.645355, -4501.50684))
+                            elseif Three_World then
+                                TP(CFrame.new(-5057.146484375, 314.54132080078, -2934.7995605469))
+                            end
                         end
-                    else
-                        if New_World then
-                            TP(CFrame.new(-6438.73535, 250.645355, -4501.50684))
-                        elseif Three_World then
-                            TP(CFrame.new(-5057.146484375, 314.54132080078, -2934.7995605469))
-                        end
-                    end
+                    end)
                 end
             end
         end)
-    end)
+    end
 
     -- Tab Shop
     local ShopTab = Window:MakeTab({
