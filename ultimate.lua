@@ -17,6 +17,7 @@ _G.Settings = {
   Main = {
     ["Auto Farm Level"] = false,
     ["Fast Auto Farm Level"] = false,
+    ["Auto Farm Monster"] = false,
     
     ["Auto Sea 2"] = false,
     ["Auto Sea 3"] = false,
@@ -2991,38 +2992,8 @@ local function main()
         Name = "Auto Save Config",
         Default = _G.Settings.Configs["AutoSave"],
         Callback = function(Value)
-        _G.Settings.Configs["AutoSave"] = Value
+            _G.Settings.Configs["AutoSave"] = Value
             SaveSettings()
-        end
-    })
-
-    local RunService = game:GetService("RunService")
-    local UIS = game:GetService("UserInputService")
-
-    SettingsTab:AddButton({
-        Name = "Remove Script",
-        Callback = function()
-            for _, thread in ipairs(coroutines) do
-                coroutine.resume(thread)
-            end
-
-            for _, event in ipairs(events) do
-                event:Disconnect()
-            end
-
-            for _, timer in ipairs(timers) do
-                timer:Stop()
-            end
-
-            for _, heartbeat in ipairs(heartbeats) do
-                heartbeat:Disconnect()
-            end
-
-            for _, spawn in ipairs(spawns) do
-                spawn:Stop()
-            end
-
-            script:Destroy()
         end
     })
 
@@ -3102,6 +3073,7 @@ local function main()
             end
         end,
     })
+
     task.spawn(function()
     while wait() do
         pcall(function()
@@ -3171,6 +3143,7 @@ local function main()
         Default = _G.Settings.Configs["Fast Attack"],
         Callback = function(Value)
             _G.Settings.Configs["Fast Attack"] = Value
+
             if _G.Settings.Configs["AutoSave"] then
                 SaveSettings()
             end
@@ -3226,17 +3199,6 @@ local function main()
             end
         end
     end)
-
-    SettingsTab:AddToggle({
-        Name = "Fast Attack",
-        Default = _G.Settings.Configs["Fast Attack"],
-        Callback = function(Value)
-            _G.Settings.Configs["Fast Attack"] = Value
-            if _G.Settings.Configs["AutoSave"] then
-                SaveSettings()
-            end
-        end    
-    })
 
     SettingsTab:AddToggle({
         Name = "Auto Haki",
