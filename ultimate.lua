@@ -2973,6 +2973,17 @@ local function main()
     })
 
     local SettingsSection = SettingsTab:AddSection({
+        Name = "Server Configuration"
+    })
+
+    SettingsTab:AddButton({
+        Name = "Rejoin Server",
+        Callback = function()
+            game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId)
+        end
+    })
+
+    local SettingsSection = SettingsTab:AddSection({
         Name = "Script Configuration"
     })
 
@@ -2982,6 +2993,36 @@ local function main()
         Callback = function(Value)
         _G.Settings.Configs["AutoSave"] = Value
             SaveSettings()
+        end
+    })
+
+    local RunService = game:GetService("RunService")
+    local UIS = game:GetService("UserInputService")
+
+    SettingsTab:AddButton({
+        Name = "Remove Script",
+        Callback = function()
+            for _, thread in ipairs(coroutines) do
+                coroutine.resume(thread)
+            end
+
+            for _, event in ipairs(events) do
+                event:Disconnect()
+            end
+
+            for _, timer in ipairs(timers) do
+                timer:Stop()
+            end
+
+            for _, heartbeat in ipairs(heartbeats) do
+                heartbeat:Disconnect()
+            end
+
+            for _, spawn in ipairs(spawns) do
+                spawn:Stop()
+            end
+
+            script:Destroy()
         end
     })
 
