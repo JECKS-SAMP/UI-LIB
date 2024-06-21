@@ -114,7 +114,7 @@ _G.Settings = {
     ["Bypass TP"] = false,
     ["Select Team"] = {"Pirate"}, --{Pirate,Marine}
     ["Fast Attack"] = true,
-    ["Fast Attack Type"] = {"Normal"}, --{Normal,Fast,Slow}
+    ["Fast Attack Type"] = {"Normal"}, --{Slow,Normal,Fast,Very Fast}
     ["Select Weapon"] = {},
 
 
@@ -3146,44 +3146,86 @@ local function main()
     end
     end)
 
-    SettingsTab:AddButton({
-        Name = "Refresh Weapon",
-        Callback = function()
-            SelectWeapon:Clear()
-            
-            for _, v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
-                if v:IsA("Tool") then
-                    SelectWeapon:Add(v.Name)
+    SettingsTab:AddDropdown({
+        Name = "Fast Attack Type",
+        Options = {"Fast", "Normal", "Slow"},
+        Callback = function(Value)
+            if _G.Settings.Configs["Fast Attack"] then
+                _G.Settings.Configs["Fast Attack Type"] = Value
+                if _G.Settings.Configs["AutoSave"] then
+                    SaveSettings()
                 end
+            else
+                OrionLib:MakeNotification({
+                    Name = "ULTIMATE HUB",
+                    Content = "Please Enable Fast Attack",
+                    Image = "rbxassetid://18107430965",
+                    Time = 5
+                })
             end
-            
-            for _, v in pairs(game.Players.LocalPlayer.Character:GetChildren()) do
-                if v:IsA("Tool") then
-                    SelectWeapon:Add(v.Name)
-                end
-            end
-        end
+        end,
     })
 
-    SettingsTab:AddDropdown({
-    Name = "Fast Attack Type",
-    Options = {"Fast","Normal","Slow"},
-    Callback = function(Value)
-        if _G.Settings.Configs["Fast Attack"] then
-            _G.Settings.Configs["Fast Attack Type"] = Value
+    SettingsTab:AddToggle({
+        Name = "Fast Attack",
+        Default = _G.Settings.Configs["Fast Attack"],
+        Callback = function(Value)
+            _G.Settings.Configs["Fast Attack"] = Value
             if _G.Settings.Configs["AutoSave"] then
                 SaveSettings()
             end
-        else
-            OrionLib:MakeNotification({
-            Name = "ULTIMATE HUB",
-            Content = "Please Enable Fast Attack",
-            Image = "rbxassetid://18107430965",
-            Time = 5
-            })
-        end
-    end,
+        end    
     })
+
+    local RigC = require(game:GetService("Players").LocalPlayer.PlayerScripts.CombatFramework) 
+    local VirtualUser = game:GetService('VirtualUser')
+    local kkii = require(game.ReplicatedStorage.Util.CameraShaker)
+
+    spawn(function()
+        game:GetService('RunService').Heartbeat:connect(function()
+            if _G.Settings.Configs["Fast Attack"] then
+                pcall(function()
+                    RigC.activeController.timeToNextAttack = 0
+                    RigC.activeController.attacking = false
+                    RigC.activeController.blocking = false
+                    RigC.activeController.timeToNextAttack = 0
+                    RigC.activeController.timeToNextBlock = 0
+                    RigC.activeController.increment = 3
+                    RigC.activeController.hitboxMagnitude = 100
+                    game.Players.LocalPlayer.Character.Stun.Value = 0
+                    game.Players.LocalPlayer.Character.Humanoid.Sit = false
+
+                    VirtualUser:CaptureController()
+                    VirtualUser:Button1Down(Vector2.new(1280, 672))
+                    kkii:Stop()
+                end)
+            end
+        end)
+    end)
+
+    spawn(function()
+        game:GetService('RunService').Heartbeat:wait()
+        while true do
+            if _G.Settings.Configs["Fast Attack"] then
+                local attackSpeed = 4
+                if _G.Settings.Configs["Fast Attack Type"] == "Fast" then
+                    attackSpeed = 0.5
+                elseif _G.Settings.Configs["Fast Attack Type"] == "Normal" then
+                    attackSpeed = 4
+                elseif _G.Settings.Configs["Fast Attack Type"] == "Slow" then
+                    attackSpeed = 2
+                elseif _G.Settings.Configs["Fast Attack Type"] == "Very Fast" then
+                    attackSpeed = 0.1
+                end
+
+                VirtualUser:CaptureController()
+                VirtualUser:Button1Down(Vector2.new(1280, 672))
+                game:GetService('RunService').Heartbeat:wait(attackSpeed)
+            else
+                game:GetService('RunService').Heartbeat:wait()
+            end
+        end
+    end)
 
     SettingsTab:AddToggle({
         Name = "Fast Attack",
@@ -3207,14 +3249,14 @@ local function main()
         end,  
     })
     spawn(function()
-    while wait() do
-    if _G.Settings.Configs["Auto Haki"] then
-    if not game.Players.LocalPlayer.Character:FindFirstChild("HasBuso") then
-        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("Buso")
-    end
-    end
-    end
-    end)
+        while wait() do
+            if _G.Settings.Configs["Auto Haki"] then
+                if not game.Players.LocalPlayer.Character:FindFirstChild("HasBuso") then
+                    game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("Buso")
+                end
+            end
+        end
+    end)    
 
     SettingsTab:AddButton({
         Name = "Reset Settings",
