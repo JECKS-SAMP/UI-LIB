@@ -3,7 +3,7 @@ print("Discord Server: https://discord.gg/FUKFyqzyqg")
 print("-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-")
 wait(2)
 
-local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/JECKS-SAMP/UI-LIB/main/source-news.lua')))()--
+local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/JECKS-SAMP/UI-LIB/main/source-news.lua')))()
 --local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 
 OrionLib:MakeNotification({
@@ -2919,47 +2919,63 @@ local function main()
         Default = _G.Settings.Configs["Esp Players"],
         Callback = function(Value)
             _G.Settings.Configs["Esp Players"] = Value
-            UpdateEspPlayer()
-
+            if Value then
+                UpdateEspPlayer()
+            else
+                UpdateEspPlayer()
+            end
+    
             if _G.Settings.Configs["AutoSave"] then
                 SaveSettings()
             end
         end
     })
-
+    
     EspTab:AddToggle({
         Name = "Esp Fruits",
         Default = _G.Settings.Configs["Esp Fruits"],
         Callback = function(Value)
             _G.Settings.Configs["Esp Fruits"] = Value
-            UpdateBfEsp()
-
+            if Value then
+                UpdateBfEsp()
+            else
+                UpdateBfEsp()
+            end
+    
             if _G.Settings.Configs["AutoSave"] then
                 SaveSettings()
             end
         end
     })
-
+    
     EspTab:AddToggle({
         Name = "Esp Chest",
         Default = _G.Settings.Configs["Esp Chest"],
         Callback = function(Value)
             _G.Settings.Configs["Esp Chest"] = Value
-            UpdateChest()
-            
+            if Value then
+                UpdateChest()
+            else
+                UpdateChest()
+            end
+    
             if _G.Settings.Configs["AutoSave"] then
                 SaveSettings()
             end
         end
     })
-
+    
     EspTab:AddToggle({
         Name = "Esp Flower",
         Default = _G.Settings.Configs["Esp Flower"],
         Callback = function(Value)
             _G.Settings.Configs["Esp Flower"] = Value
-            UpdateFlower()
-            
+            if Value then
+                UpdateFlower()
+            else
+                UpdateFlower()
+            end
+    
             if _G.Settings.Configs["AutoSave"] then
                 SaveSettings()
             end
