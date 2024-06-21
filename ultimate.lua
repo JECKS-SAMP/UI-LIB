@@ -300,22 +300,22 @@ local function main()
         return math.floor(tonumber(n) + 0.5)
     end
 
-    Number = math.random(1, 1000000)
+    local Number = math.random(1, 1000000)
 
     function UpdateFlower()
         if _G.Settings.Configs["Esp Flower"] then
             pcall(function()
                 for _, v in pairs(game.Workspace:GetChildren()) do
                     if v.Name == "Flower1" or v.Name == "Flower2" then
-                        
-                            if not v:FindFirstChild("FindFlower"..Number) then
+                        if (v.Position - game:GetService('Players').LocalPlayer.Character.HumanoidRootPart.Position).Magnitude <= 60000 then
+                            if not v:FindFirstChild("FindFlower" .. Number) then
                                 local bill = Instance.new("BillboardGui", v)
-                                bill.Name = "FindFlower"..Number
+                                bill.Name = "FindFlower" .. Number
                                 bill.ExtentsOffset = Vector3.new(0, 1, 0)
                                 bill.Size = UDim2.new(1, 200, 1, 30)
                                 bill.Adornee = v
                                 bill.AlwaysOnTop = true
-
+    
                                 local name = Instance.new("TextLabel", bill)
                                 name.Font = Enum.Font.GothamBold
                                 name.FontSize = Enum.FontSize.Size14
@@ -325,7 +325,7 @@ local function main()
                                 name.BackgroundTransparency = 1
                                 name.TextStrokeTransparency = 0.5
                                 name.TextColor3 = Color3.fromRGB(248, 41, 41)
-
+    
                                 if v.Name == "Flower1" then
                                     name.Text = "Blue Flower\n" .. math.round((v.Position - game:GetService('Players').LocalPlayer.Character.HumanoidRootPart.Position).Magnitude / 3) .. " m."
                                     name.TextColor3 = Color3.fromRGB(28, 126, 255)
@@ -334,15 +334,19 @@ local function main()
                                     name.TextColor3 = Color3.fromRGB(248, 41, 41)
                                 end
                             else
-                                v["FindFlower"..Number].TextLabel.Text = v.Name .. "\n" .. math.round((v.Position - game:GetService('Players').LocalPlayer.Character.HumanoidRootPart.Position).Magnitude / 3) .. " m."
+                                v["FindFlower" .. Number].TextLabel.Text = v.Name .. "\n" .. math.round((v.Position - game:GetService('Players').LocalPlayer.Character.HumanoidRootPart.Position).Magnitude / 3) .. " m."
                             end
+                        elseif v:FindFirstChild("FindFlower" .. Number) then
+                            v["FindFlower" .. Number]:Destroy()
                         end
                     end
                 end
             end)
         else
-            if v:FindFirstChild("FindFlower"..Number) then
-                v:FindFirstChild("FindFlower"..Number):Destroy()
+            for _, v in pairs(game.Workspace:GetChildren()) do
+                if v:FindFirstChild("FindFlower" .. Number) then
+                    v["FindFlower" .. Number]:Destroy()
+                end
             end
         end
     end
@@ -352,47 +356,49 @@ local function main()
             pcall(function()
                 for _, v in pairs(game.Workspace:GetChildren()) do
                     if v.Name == "Chest1" or v.Name == "Chest2" or v.Name == "Chest3" then
-                        
-                            if (v.Position - game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position).Magnitude <= 60000 then
-                                if not v:FindFirstChild("ChestESP"..Number) then
-                                    local Bb = Instance.new("BillboardGui", v)
-                                    Bb.Name = "ChestESP"..Number
-                                    Bb.ExtentsOffset = Vector3.new(0, 1, 0)
-                                    Bb.Size = UDim2.new(1, 200, 1, 30)
-                                    Bb.Adornee = v
-                                    Bb.AlwaysOnTop = true
-
-                                    local Textlb = Instance.new("TextLabel", Bb)
-                                    Textlb.Font = Enum.Font.GothamBold
-                                    Textlb.FontSize = Enum.FontSize.Size14
-                                    Textlb.Size = UDim2.new(1, 0, 1, 0)
-                                    Textlb.BackgroundTransparency = 1
-                                    Textlb.TextStrokeTransparency = 0.5
-
-                                    if v.Name == "Chest1" then
-                                        Textlb.TextColor3 = Color3.fromRGB(174, 123, 47)
-                                        Textlb.Text = "Bronze Chest\n" .. math.round((v.Position - game:GetService('Players').LocalPlayer.Character.HumanoidRootPart.Position).Magnitude / 3) .. " m."
-                                    elseif v.Name == "Chest2" then
-                                        Textlb.TextColor3 = Color3.fromRGB(255, 255, 127)
-                                        Textlb.Text = "Gold Chest\n" .. math.round((v.Position - game:GetService('Players').LocalPlayer.Character.HumanoidRootPart.Position).Magnitude / 3) .. " m."
-                                    elseif v.Name == "Chest3" then
-                                        Textlb.TextColor3 = Color3.fromRGB(5, 243, 255)
-                                        Textlb.Text = "Diamond Chest\n" .. math.round((v.Position - game:GetService('Players').LocalPlayer.Character.HumanoidRootPart.Position).Magnitude / 3) .. " m."
-                                    end
-                                else
-                                    v["ChestESP"..Number].TextLabel.Text = v.Name .. "\n" .. math.round((v.Position - game:GetService('Players').LocalPlayer.Character.HumanoidRootPart.Position).Magnitude / 3) .. " m."
+                        if (v.Position - game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position).Magnitude <= 60000 then
+                            if not v:FindFirstChild("ChestESP"..Number) then
+                                local Bb = Instance.new("BillboardGui", v)
+                                Bb.Name = "ChestESP"
+                                Bb.ExtentsOffset = Vector3.new(0, 1, 0)
+                                Bb.Size = UDim2.new(1, 200, 1, 30)
+                                Bb.Adornee = v
+                                Bb.AlwaysOnTop = true
+    
+                                local Textlb = Instance.new("TextLabel", Bb)
+                                Textlb.Font = Enum.Font.GothamBold
+                                Textlb.FontSize = Enum.FontSize.Size14
+                                Textlb.Size = UDim2.new(1, 0, 1, 0)
+                                Textlb.BackgroundTransparency = 1
+                                Textlb.TextStrokeTransparency = 0.5
+    
+                                if v.Name == "Chest1" then
+                                    Textlb.TextColor3 = Color3.fromRGB(174, 123, 47)
+                                    Textlb.Text = "Bronze Chest\n" .. math.round((v.Position - game:GetService('Players').LocalPlayer.Character.HumanoidRootPart.Position).Magnitude / 3) .. " m."
+                                elseif v.Name == "Chest2" then
+                                    Textlb.TextColor3 = Color3.fromRGB(255, 255, 127)
+                                    Textlb.Text = "Gold Chest\n" .. math.round((v.Position - game:GetService('Players').LocalPlayer.Character.HumanoidRootPart.Position).Magnitude / 3) .. " m."
+                                elseif v.Name == "Chest3" then
+                                    Textlb.TextColor3 = Color3.fromRGB(5, 243, 255)
+                                    Textlb.Text = "Diamond Chest\n" .. math.round((v.Position - game:GetService('Players').LocalPlayer.Character.HumanoidRootPart.Position).Magnitude / 3) .. " m."
                                 end
+                            else
+                                v.ChestESP.TextLabel.Text = v.Name .. "\n" .. math.round((v.Position - game:GetService('Players').LocalPlayer.Character.HumanoidRootPart.Position).Magnitude / 3) .. " m."
                             end
+                        elseif v:FindFirstChild("ChestESP") then
+                            v.ChestESP:Destroy()
                         end
                     end
                 end
             end)
         else
-            if v:FindFirstChild("ChestESP"..Number) then
-                v:FindFirstChild("ChestESP"..Number):Destroy()
+            for _, v in pairs(game.Workspace:GetChildren()) do
+                if v:FindFirstChild("ChestESP") then
+                    v.ChestESP:Destroy()
+                end
             end
         end
-    end
+    end    
 
     function UpdateEspPlayer()
         if _G.Settings.Configs["Esp Players"] then
@@ -456,35 +462,37 @@ local function main()
     function UpdateBfEsp()
         if _G.Settings.Configs["Esp Fruits"] then
             pcall(function()
-                for i,v in pairs(game.Workspace:GetChildren()) do
+                for i, v in pairs(game.Workspace:GetChildren()) do
                     if string.find(v.Name, "Fruit") then 
-                        if not v.Handle:FindFirstChild('NameEsp'..Number) then
-                            local bill = Instance.new('BillboardGui',v.Handle)
-                            bill.Name = 'NameEsp'..Number
+                        if not v.Handle:FindFirstChild('NameEsp' .. Number) then
+                            local bill = Instance.new('BillboardGui', v.Handle)
+                            bill.Name = 'NameEsp' .. Number
                             bill.ExtentsOffset = Vector3.new(0, 1, 0)
-                            bill.Size = UDim2.new(1,200,1,30)
+                            bill.Size = UDim2.new(1, 200, 1, 30)
                             bill.Adornee = v.Handle
                             bill.AlwaysOnTop = true
-
-                            local name = Instance.new('TextLabel',bill)
-                            name.Font = "GothamBold"
-                            name.FontSize = "Size14"
+    
+                            local name = Instance.new('TextLabel', bill)
+                            name.Font = Enum.Font.GothamBold
+                            name.FontSize = Enum.FontSize.Size14
                             name.TextWrapped = true
-                            name.Size = UDim2.new(1,0,1,0)
-                            name.TextYAlignment = 'Top'
+                            name.Size = UDim2.new(1, 0, 1, 0)
+                            name.TextYAlignment = Enum.TextYAlignment.Top
                             name.BackgroundTransparency = 1
                             name.TextStrokeTransparency = 0.5
                             name.TextColor3 = Color3.fromRGB(255, 0, 0)
-                            name.Text = (v.Name ..' \n'.. round((game:GetService('Players').LocalPlayer.Character.Head.Position - v.Handle.Position).Magnitude/3) ..' M')
+                            name.Text = v.Name .. ' \n' .. math.round((game:GetService('Players').LocalPlayer.Character.Head.Position - v.Handle.Position).Magnitude / 3) .. ' M'
                         else
-                            v.Handle['NameEsp'..Number].TextLabel.Text = (v.Name ..' \n'.. round((game:GetService('Players').LocalPlayer.Character.Head.Position - v.Handle.Position).Magnitude/3) ..' M')
+                            v.Handle['NameEsp' .. Number].TextLabel.Text = v.Name .. ' \n' .. math.round((game:GetService('Players').LocalPlayer.Character.Head.Position - v.Handle.Position).Magnitude / 3) .. ' M'
                         end
                     end
                 end
             end)
         else
-            if v.Handle:FindFirstChild('NameEsp'..Number) then
-                v.Handle:FindFirstChild('NameEsp'..Number):Destroy()
+            for i, v in pairs(game.Workspace:GetChildren()) do
+                if v.Handle:FindFirstChild('NameEsp' .. Number) then
+                    v.Handle['NameEsp' .. Number]:Destroy()
+                end
             end
         end
     end
@@ -2911,9 +2919,7 @@ local function main()
         Default = _G.Settings.Configs["Esp Players"],
         Callback = function(Value)
             _G.Settings.Configs["Esp Players"] = Value
-            wait(1)
-
-                UpdateEspPlayer()
+            UpdateEspPlayer()
 
             if _G.Settings.Configs["AutoSave"] then
                 SaveSettings()
@@ -2926,9 +2932,7 @@ local function main()
         Default = _G.Settings.Configs["Esp Fruits"],
         Callback = function(Value)
             _G.Settings.Configs["Esp Fruits"] = Value
-            wait(1)
-
-                UpdateBfEsp()
+            UpdateBfEsp()
 
             if _G.Settings.Configs["AutoSave"] then
                 SaveSettings()
@@ -2941,9 +2945,7 @@ local function main()
         Default = _G.Settings.Configs["Esp Chest"],
         Callback = function(Value)
             _G.Settings.Configs["Esp Chest"] = Value
-            wait(1)
-
-                UpdateChest()
+            UpdateChest()
             
             if _G.Settings.Configs["AutoSave"] then
                 SaveSettings()
@@ -2956,8 +2958,6 @@ local function main()
         Default = _G.Settings.Configs["Esp Flower"],
         Callback = function(Value)
             _G.Settings.Configs["Esp Flower"] = Value
-            wait(1)
-
             UpdateFlower()
             
             if _G.Settings.Configs["AutoSave"] then
