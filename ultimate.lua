@@ -2067,27 +2067,27 @@ MainTab:AddToggle({
 	Name = "Auto Farm Monster",
 	Default = _G.Settings.Main["Auto Farm Monster"],
 	Callback = function(Value)
-
-	if SelectMonster == "" then
-		OrionLib:MakeNotification({
-			Name = "ULTIMATE HUB",
-			Content = "Please Select You Monster...",
-			Image = "rbxassetid://18107430965",
-			Time = 5
-		})
-	else if _G.Settings.Configs["Select Weapon"] == "" then
-		OrionLib:MakeNotification({
-			Name = "ULTIMATE HUB",
-			Content = "Please Select You Weapon...",
-			Image = "rbxassetid://18107430965",
-			Time = 5
-		})
-	else
-		_G.Settings.Main["Auto Farm Monster"] = Value
-		NoClip(_G.Settings.Main["Auto Farm Monster"])
-		wait(2)
-		TP(game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame)
-	end,
+		if SelectMonster == "" then
+			OrionLib:MakeNotification({
+				Name = "ULTIMATE HUB",
+				Content = "Please Select Your Monster...",
+				Image = "rbxassetid://18107430965",
+				Time = 5
+			})
+		elseif _G.Settings.Configs["Select Weapon"] == "" then
+			OrionLib:MakeNotification({
+				Name = "ULTIMATE HUB",
+				Content = "Please Select Your Weapon...",
+				Image = "rbxassetid://18107430965",
+				Time = 5
+			})
+		else
+			_G.Settings.Main["Auto Farm Monster"] = Value
+			NoClip(_G.Settings.Main["Auto Farm Monster"])
+			wait(2)
+			TP(game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame)
+		end
+	end
 })
 
 local MainSection = MainTab:AddSection({
@@ -2972,11 +2972,9 @@ SettingsTab:AddButton({
             game.Players.LocalPlayer.PlaceIDGUI:Destroy()
         end
 
-        -- Membuat ScreenGui
         local screenGui = Instance.new("ScreenGui", game.Players.LocalPlayer:WaitForChild("PlayerGui"))
         screenGui.Name = "PlaceIDGUI"
 
-        -- Membuat TextLabel untuk menampilkan Place ID
         local placeIDLabel = Instance.new("TextLabel", screenGui)
         placeIDLabel.Size = UDim2.new(0, 300, 0, 50)
         placeIDLabel.Position = UDim2.new(1, -350, 0.5, -75)
