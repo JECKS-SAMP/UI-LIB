@@ -2111,31 +2111,30 @@ if not Old_World then
             end
         end,
     })
-
-    elseif New_World then
-        MainTab:AddToggle({
-            Name = "Auto Third Sea",
-            Default = _G.Settings.Main["Auto Sea 2"],
-            Callback = function(Value)
-                _G.Settings.Main["Auto Sea 2"] = Value
-                ReadyThirdSea = Value
-                TP(game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame)
-                if ReadyThirdSea and game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BartiloQuestProgress", "Bartilo") ~= 3 then
-                    DiscordLib:Notification("Auto Third Sea", "You must have finished Bartilo Quest", "Ok")
-                elseif ReadyThirdSea and game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("ZQuestProgress", "Check") ~= 0 then
-                    DiscordLib:Notification("Auto Third Sea", "You must have killed Don Swan first", "Ok")
-                elseif ReadyThirdSea and SelectToolWeapon == "" then
-                    DiscordLib:Notification("Auto Third Sea", "Select Weapon First", "Ok")
-                else
-                    AutoThird = Value
-                end
-                
-                if _G.Settings.Configs["AutoSave"] then
-                    SaveSettings()
-                end
-            end,
-        })
-    end
+elseif New_World then
+    MainTab:AddToggle({
+        Name = "Auto Third Sea",
+        Default = _G.Settings.Main["Auto Sea 2"],
+        Callback = function(Value)
+            _G.Settings.Main["Auto Sea 2"] = Value
+            ReadyThirdSea = Value
+            TP(game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame)
+            
+            if ReadyThirdSea and game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BartiloQuestProgress", "Bartilo") ~= 3 then
+                DiscordLib:Notification("Auto Third Sea", "You must have finished Bartilo Quest", "Ok")
+            elseif ReadyThirdSea and game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("ZQuestProgress", "Check") ~= 0 then
+                DiscordLib:Notification("Auto Third Sea", "You must have killed Don Swan first", "Ok")
+            elseif ReadyThirdSea and SelectToolWeapon == "" then
+                DiscordLib:Notification("Auto Third Sea", "Select Weapon First", "Ok")
+            else
+                AutoThird = Value
+            end
+            
+            if _G.Settings.Configs["AutoSave"] then
+                SaveSettings()
+            end
+        end,
+    })
 end
 
 if Old_World then
@@ -2267,38 +2266,45 @@ spawn(function()
 end)
 
 spawn(function()
-	while wait(.1) do
+	while wait(0.1) do
 		if _G.Settings.Raids["Auto Raids"] or RaidSuperhuman then
 			pcall(function()
-				if game:GetService("Players")["LocalPlayer"].PlayerGui.Main.Timer.Visible == false then
+				local player = game:GetService("Players").LocalPlayer
+				local playerGui = player.PlayerGui
+				local workspace = game:GetService("Workspace")
+				local replicatedStorage = game:GetService("ReplicatedStorage")
+
+				if not playerGui.Main.Timer.Visible then
 					if AutoFullySuperhuman then
-						if not game:GetService("Workspace")["_WorldOrigin"].Locations:FindFirstChild("Island 1") and not game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Special Microchip") or not game:GetService("Players").LocalPlayer.Character:FindFirstChild("Special Microchip") then
-							for i,v in pairs(game:GetService("Players").LocalPlayer.Backpack:GetChildren()) do
+						local backpack = player.Backpack
+						if not workspace["_WorldOrigin"].Locations:FindFirstChild("Island 1") and not backpack:FindFirstChild("Special Microchip") and not player.Character:FindFirstChild("Special Microchip") then
+							for _, v in pairs(backpack:GetChildren()) do
 								if not string.find(v.Name, "Fruit") then
-									game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("Cousin","Buy")
+									replicatedStorage.Remotes.CommF_:InvokeServer("Cousin", "Buy")
 								end
 							end
 						end
 					end
-					if not game:GetService("Workspace")["_WorldOrigin"].Locations:FindFirstChild("Island 1") then
-						game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("RaidsNpc", "Select", _G.SelectRaid)
+
+					if not workspace["_WorldOrigin"].Locations:FindFirstChild("Island 1") then
+						replicatedStorage.Remotes.CommF_:InvokeServer("RaidsNpc", "Select", _G.SelectRaid)
 					end
-					if game:GetService("Workspace")["_WorldOrigin"].Locations:FindFirstChild("Island 1") then
-						game:GetService("StarterGui"):SetCore("SendNotification",
-							{
-								Title = "Auto Raid",
-								Text = "Have Some People in Raid",
-								Icon = "",
-								Duration = 99999
-							}
-						)
+
+					if workspace["_WorldOrigin"].Locations:FindFirstChild("Island 1") then
+						game:GetService("StarterGui"):SetCore("SendNotification", {
+							Title = "Auto Raid",
+							Text = "Have Some People in Raid",
+							Icon = "",
+							Duration = 99999
+						})
 						wait(4)
 					end
-					if not game:GetService("Workspace")["_WorldOrigin"].Locations:FindFirstChild("Island 1") and game.Players.LocalPlayer.Backpack:FindFirstChild("Special Microchip") orgame.Players.LocalPlayer.Character:FindFirstChild("Special Microchip")then
+
+					if not workspace["_WorldOrigin"].Locations:FindFirstChild("Island 1") and (player.Backpack:FindFirstChild("Special Microchip") or player.Character:FindFirstChild("Special Microchip")) then
 						if New_World then
-							fireclickdetector(game:GetService("Workspace").Map.CircleIsland.RaidSummon2.Button.Main.ClickDetector)
+							fireclickdetector(workspace.Map.CircleIsland.RaidSummon2.Button.Main.ClickDetector)
 						elseif Three_World then
-							fireclickdetector(game:GetService("Workspace").Map["Boat Castle"].RaidSummon2.Button.Main.ClickDetector)
+							fireclickdetector(workspace.Map["Boat Castle"].RaidSummon2.Button.Main.ClickDetector)
 						end
 					end
 				end
@@ -2348,30 +2354,36 @@ end)
 
 spawn(function()
 	pcall(function()
-		while game:GetService("RunService").Heartbeat:wait() do
+		while game:GetService("RunService").Heartbeat:Wait() do
 			if _G.Settings.Raids["Auto Next Place"] or RaidSuperhuman or _G.Settings.Raids["Auto Raids"] then
-				if game:GetService("Players")["LocalPlayer"].PlayerGui.Main.Timer.Visible == true and game:GetService("Workspace")["_WorldOrigin"].Locations:FindFirstChild("Island 5") or game:GetService("Workspace")["_WorldOrigin"].Locations:FindFirstChild("Island 4") or game:GetService("Workspace")["_WorldOrigin"].Locations:FindFirstChild("Island 3") or game:GetService("Workspace")["_WorldOrigin"].Locations:FindFirstChild("Island 2") or game:GetService("Workspace")["_WorldOrigin"].Locations:FindFirstChild("Island 1") then
-					if game:GetService("Workspace")["_WorldOrigin"].Locations:FindFirstChild("Island 5") then
-						TP(game:GetService("Workspace")["_WorldOrigin"].Locations["Island 5"].CFrame*CFrame.new(0,80,0))
-					elseif game:GetService("Workspace")["_WorldOrigin"].Locations:FindFirstChild("Island 4") then
-						TP(game:GetService("Workspace")["_WorldOrigin"].Locations["Island 4"].CFrame*CFrame.new(0,80,0))
-					elseif game:GetService("Workspace")["_WorldOrigin"].Locations:FindFirstChild("Island 3") then
-						TP(game:GetService("Workspace")["_WorldOrigin"].Locations["Island 3"].CFrame*CFrame.new(0,80,0))
-					elseif game:GetService("Workspace")["_WorldOrigin"].Locations:FindFirstChild("Island 2") then
-						TP(game:GetService("Workspace")["_WorldOrigin"].Locations["Island 2"].CFrame*CFrame.new(0,80,0))
-					elseif game:GetService("Workspace")["_WorldOrigin"].Locations:FindFirstChild("Island 1") then
-						TP(game:GetService("Workspace")["_WorldOrigin"].Locations["Island 1"].CFrame*CFrame.new(0,80,0))
+				local player = game:GetService("Players").LocalPlayer
+				local playerGui = player.PlayerGui
+				local workspace = game:GetService("Workspace")
+				local locations = workspace["_WorldOrigin"].Locations
+
+				if playerGui.Main.Timer.Visible == true then
+					if locations:FindFirstChild("Island 5") then
+						TP(locations["Island 5"].CFrame * CFrame.new(0, 80, 0))
+					elseif locations:FindFirstChild("Island 4") then
+						TP(locations["Island 4"].CFrame * CFrame.new(0, 80, 0))
+					elseif locations:FindFirstChild("Island 3") then
+						TP(locations["Island 3"].CFrame * CFrame.new(0, 80, 0))
+					elseif locations:FindFirstChild("Island 2") then
+						TP(locations["Island 2"].CFrame * CFrame.new(0, 80, 0))
+					elseif locations:FindFirstChild("Island 1") then
+						TP(locations["Island 1"].CFrame * CFrame.new(0, 80, 0))
 					end
-					elseif New_World then
+				else
+					if New_World then
 						TP(CFrame.new(-6438.73535, 250.645355, -4501.50684))
 					elseif Three_World then
 						TP(CFrame.new(-5057.146484375, 314.54132080078, -2934.7995605469))
 					end
 				end
 			end
-		end)
+		end
 	end)
-end
+end)
 
 -- Tab Shop
 local ShopTab = Window:MakeTab({
