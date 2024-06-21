@@ -2810,13 +2810,13 @@ local tweenInfo = TweenInfo.new(45, Enum.EasingStyle.Linear)
 if Old_World then
     createDropdown(TpTab, "Select Island", {
         "Pirate Island", "Marine Island", "Colosseum", "Desert", "Fountain City", "Jungle", "Marine Fort", "Middle Town", "Prison", "Pirate Village", "Sky 1", "Sky 2", "Snow", "Under Water", "Magma Village", "Fish Man Village", "Shell Town"
-    }, function(value)
+    }, function(Value)
         teleportTo(value, oldWorldLocations, tweenInfo)
     end)
 elseif New_World then
     createDropdown(TpTab, "Select Island", {
         "Dock", "Mansion", "Kingdom of Rose", "Cafe", "Sunflower", "Jeramy Mountain", "Colosseum 2", "Usopp's Island", "Factory", "The Bridge", "Green Bit", "Graveyard", "Dark Area", "Superhuman Mountain", "Lava Island", "Cold Island", "Ice Castle", "Inscription Island", "Forgotten Island", "Ghost Ship"
-    }, function(value)
+    }, function(Value)
         if value == "Ghost Ship" then
             game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("requestEntrance", newWorldLocations[value])
         else
@@ -2826,7 +2826,7 @@ elseif New_World then
 elseif Three_World then
     createDropdown(TpTab, "Select Island", {
         "Port Town", "Hydra Island", "Gaint Tree", "Zou Island", "Mansion", "Castle on the Sea", "Graveyard Island", "CoCoNut Island", "HoCake Island 1", "HoCake Island 2"
-    }, function(value)
+    }, function(Value)
         teleportTo(value, threeWorldLocations, tweenInfo)
     end)
 end
@@ -2997,7 +2997,7 @@ local SettingsSection = SettingsTab:AddSection({
 SettingsTab:AddDropdown({
 	Name = "Select Weapon",
 	Options = {"Melee","Sword","Fruit"},
-	Callback = function(value)
+	Callback = function(Value)
 		SelectWeapon = Value
 		if _G.Settings.Configs["AutoSave"] then
 			SaveSettings()
@@ -3070,7 +3070,7 @@ SettingsTab:AddButton({
 SettingsTab:AddDropdown({
   Name = "Fast Attack Type",
   Options = {"Fast","Normal","Slow"},
-  Callback = function(value)
+  Callback = function(Value)
       if _G.Settings.Configs["Fast Attack"] then
           _G.Settings.Configs["Fast Attack Type"] = Value
           if _G.Settings.Configs["AutoSave"] then
