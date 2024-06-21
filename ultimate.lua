@@ -2707,45 +2707,38 @@ local function main()
         end
     })
 
-    -- Tab Fruits
-    local FruitTab = Window:MakeTab({
-        Name = "Fruit Menu",
-        Icon = "rbxassetid://7044226690",
-        PremiumOnly = false
-    })
-
-    local FruitSection = FruitTab:AddSection({
-        Name = "Fruit Teleport"
-    })
-
-    FruitTab:AddToggle({
-        Name = "Auto Teleport To Fruit",
-        Default = _G.Settings.Fruits["Teleport Fruits"],
-        Callback = function(Value)
-        _G.Settings.Fruits["Teleport Fruits"] = Value
-        if _G.Settings.Configs["AutoSave"] then
-            SaveSettings()
-            end
-        end,
-    })
-
-    if playerTP.Humanoid.Health > 1 then
-        if _G.Settings.Fruits["Teleport Fruits"] then
-        UIS.InputBegan:Connect(function(input)
-            if input.KeyCode == Enum.KeyCode.K then
-                local powerLocations = game.Workspace.PowerSpawn.SpawnedPower:FindFirstChildOfClass("Tool")
-                playerTP:MoveTo(powerLocations.Handle.Position)
-            end
-        end)
-        end
-    end
-
     -- Tab Tp
     local TpTab = Window:MakeTab({
         Name = "Teleport",
         Icon = "rbxassetid://7044226690",
         PremiumOnly = false
     })
+
+    local TpSection = TpTab:AddSection({
+        Name = "Fruit Teleport"
+    })
+
+    TpTab:AddToggle({
+        Name = "Auto Teleport To Fruit",
+        Default = _G.Settings.Fruits["Teleport Fruits"],
+        Callback = function(Value)
+            _G.Settings.Fruits["Teleport Fruits"] = Value
+            if _G.Settings.Configs["AutoSave"] then
+                SaveSettings()
+            end
+        end,
+    })
+    
+    if playerTP.Humanoid.Health > 1 then
+        if _G.Settings.Fruits["Teleport Fruits"] then
+            UIS.InputBegan:Connect(function(input)
+                if input.KeyCode == Enum.KeyCode.K then
+                    local powerLocations = game.Workspace.PowerSpawn.SpawnedPower:FindFirstChildOfClass("Tool")
+                    playerTP:MoveTo(powerLocations.Handle.Position)
+                end
+            end)
+        end
+    end    
 
     local TpSection = TpTab:AddSection({
         Name = "Teleport Sea"
