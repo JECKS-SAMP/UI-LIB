@@ -2908,9 +2908,8 @@ local function main()
         Callback = function(Value)
             _G.Settings.Configs["Esp Players"] = Value
             wait(1)
-            while _G.Settings.Configs["Esp Players"] do wait()
+
                 UpdateEspPlayer()
-            end
 
             if _G.Settings.Configs["AutoSave"] then
                 SaveSettings()
@@ -2924,9 +2923,8 @@ local function main()
         Callback = function(Value)
             _G.Settings.Configs["Esp Fruits"] = Value
             wait(1)
-            while _G.Settings.Configs["Esp Fruits"] do wait()
+
                 UpdateBfEsp()
-            end
 
             if _G.Settings.Configs["AutoSave"] then
                 SaveSettings()
@@ -2940,9 +2938,8 @@ local function main()
         Callback = function(Value)
             _G.Settings.Configs["Esp Chest"] = Value
             wait(1)
-            while _G.Settings.Configs["Esp Chest"] do wait()
+
                 UpdateChest()
-            end
             
             if _G.Settings.Configs["AutoSave"] then
                 SaveSettings()
@@ -2956,9 +2953,8 @@ local function main()
         Callback = function(Value)
             _G.Settings.Configs["Esp Flower"] = Value
             wait(1)
-            while _G.Settings.Configs["Esp Flower"] do wait()
-                UpdateFlower()
-            end
+
+            UpdateFlower()
             
             if _G.Settings.Configs["AutoSave"] then
                 SaveSettings()
