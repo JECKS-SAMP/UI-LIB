@@ -694,6 +694,7 @@ function OrionLib:MakeWindow(WindowConfig)
 
 	local function LoadSequence()
 		MainWindow.Visible = false
+		local blureffect = game.Lighting.Blur
 
 		local LoadSequenceLogo = SetProps(MakeElement("Image", WindowConfig.IntroIcon), {
 			Parent = Orion,
@@ -713,13 +714,15 @@ function OrionLib:MakeWindow(WindowConfig)
 			Font = Enum.Font.GothamBold,
 			TextTransparency = 1
 		})
-		
+
+		blureffect.Enabled = true
 		TweenService:Create(LoadSequenceLogo, TweenInfo.new(.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {ImageTransparency = 0, Position = UDim2.new(0.5, 0, 0.5, 0)}):Play()
 		wait(0.8)
 		TweenService:Create(LoadSequenceLogo, TweenInfo.new(.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Position = UDim2.new(0.5, -(LoadSequenceText.TextBounds.X/2), 0.5, 0)}):Play()
 		wait(0.3)
 		TweenService:Create(LoadSequenceText, TweenInfo.new(.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextTransparency = 0}):Play()
 		wait(2)
+		blureffect.Enabled = false
 		TweenService:Create(LoadSequenceText, TweenInfo.new(.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextTransparency = 1}):Play()
 		
 		MainWindow.Visible = true
