@@ -434,7 +434,7 @@ local function main()
 	            BillboardGui.Parent = v.Character.Head
 	            BillboardGui.Name = 'NameEsp'..v.Name
 	            BillboardGui.ExtentsOffset = Vector3.new(0, 1, 0)
-	            BillboardGui.Size = UDim2.new(1,200,1,30)
+	            BillboardGui.Size = UDim2.new(1, 200, 1, 30)
 	            BillboardGui.Adornee = v.Character.Head
 	            BillboardGui.AlwaysOnTop = true
 	
@@ -443,11 +443,11 @@ local function main()
 	            ESP.TextTransparency = 0
 	            ESP.BackgroundTransparency = 1
 	            ESP.Size = UDim2.new(0, 200, 0, 30)
-	            ESP.Position = UDim2.new(0,25,0,0)
+	            ESP.Position = UDim2.new(0, 25, 0, 0)
 	            ESP.Font = Enum.Font.Gotham
 	            ESP.TextColor3 = Color3.new(0, 255, 255)
 	            ESP.TextSize = 14
-	            ESP.TextStrokeTransparency = 0.500
+	            ESP.TextStrokeTransparency = 0.5
 	            ESP.TextWrapped = true
 	
 	            HealthESP.Name = "HealthESP"
@@ -459,7 +459,7 @@ local function main()
 	            HealthESP.Font = Enum.Font.Gotham
 	            HealthESP.TextColor3 = Color3.fromRGB(80, 255, 245)
 	            HealthESP.TextSize = 14
-	            HealthESP.TextStrokeTransparency = 0.500
+	            HealthESP.TextStrokeTransparency = 0.5
 	            HealthESP.TextWrapped = true
 	
 	            -- Initialize text
@@ -481,16 +481,19 @@ local function main()
 	            end
 	        end
 	
-	        pcall(function()
+	        for _, v in pairs(game.Players:GetPlayers()) do
+	            createEsp(v)
+	        end
+
+	        local connection
+	        connection = game:GetService("RunService").RenderStepped:Connect(function()
 	            for _, v in pairs(game.Players:GetPlayers()) do
-	                createEsp(v)
+	                updateEsp(v)
 	            end
 	
-	            game:GetService("RunService").RenderStepped:Connect(function()
-	                for _, v in pairs(game.Players:GetPlayers()) do
-	                    updateEsp(v)
-	                end
-	            end)
+	            if not _G.Settings.Configs["Esp Players"] then
+	                connection:Disconnect()
+	            end
 	        end)
 	    else
 	        for _, v in pairs(game.Players:GetPlayers()) do
@@ -500,7 +503,7 @@ local function main()
 	                end)
 	            end
 	        end
-	    end 
+	    end
 	end
 
     function UpdateBfEsp()
@@ -547,6 +550,42 @@ local function main()
 	            end
 	        end
 	    end
+	end
+	
+	function findClosestFruit()
+		pcall(function()
+		    local closestFruit = nil
+		    local closestDistance = math.huge
+		    local playerPosition = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+		
+		    for _, v in pairs(game.Workspace:GetChildren()) do
+		        if string.find(v.Name, "Fruit") and v:FindFirstChild("Handle") then
+		            local distance = (v.Handle.Position - playerPosition).Magnitude
+		            if distance < closestDistance then
+		                closestDistance = distance
+		                closestFruit = v
+		            end
+		        end
+		    end
+		
+		    return closestFruit
+		end)
+	end
+	
+	function teleportToClosestFruit()
+		if _G.Settings.Configs["Teleport Fruits"] then
+	        pcall(function()
+			    while _G.Settings.Fruits["Teleport Fruits"] do
+			        if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") and game.Players.LocalPlayer.Character.Humanoid.Health > 1 then
+			            local closestFruit = findClosestFruit()
+			            if closestFruit then
+			                game.Players.LocalPlayer.Character:MoveTo(closestFruit.Handle.Position)
+			            end
+			        end
+			        wait(1)
+			    end
+			end)
+		end
 	end
 
     function NoClip(Config)
@@ -2788,45 +2827,17 @@ local function main()
 	    Default = _G.Settings.Fruits["Teleport Fruits"],
 	    Callback = function(Value)
 	        _G.Settings.Fruits["Teleport Fruits"] = Value
+			if Value then
+				teleportToClosestFruit()
+			else
+				teleportToClosestFruit()
+			end
+
 	        if _G.Settings.Configs["AutoSave"] then
 	            SaveSettings()
 	        end
 	    end,
 	})
-	
-	local function findClosestFruit()
-	    local closestFruit = nil
-	    local closestDistance = math.huge
-	    local playerPosition = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
-	
-	    for _, v in pairs(game.Workspace:GetChildren()) do
-	        if string.find(v.Name, "Fruit") and v:FindFirstChild("Handle") then
-	            local distance = (v.Handle.Position - playerPosition).Magnitude
-	            if distance < closestDistance then
-	                closestDistance = distance
-	                closestFruit = v
-	            end
-	        end
-	    end
-	
-	    return closestFruit
-	end
-	
-	local function teleportToClosestFruit()
-	    while _G.Settings.Fruits["Teleport Fruits"] do
-	        if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") and game.Players.LocalPlayer.Character.Humanoid.Health > 1 then
-	            local closestFruit = findClosestFruit()
-	            if closestFruit then
-	                game.Players.LocalPlayer.Character:MoveTo(closestFruit.Handle.Position)
-	            end
-	        end
-	        wait(1)
-	    end
-	end
-	
-	if _G.Settings.Fruits["Teleport Fruits"] then
-	    teleportToClosestFruit()
-	end
 
     local TpSection = TpTab:AddSection({
         Name = "Teleport Sea"
