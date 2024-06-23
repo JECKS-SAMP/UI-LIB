@@ -694,7 +694,12 @@ function OrionLib:MakeWindow(WindowConfig)
 
 	local function LoadSequence()
 		MainWindow.Visible = false
-		local blureffect = game.Lighting.Blur
+
+		local blureffect = game.Lighting:FindFirstChild("Blur")
+		if not blureffect then
+			warn("Blur effect not found in Lighting")
+			return
+		end
 
 		local LoadSequenceLogo = SetProps(MakeElement("Image", WindowConfig.IntroIcon), {
 			Parent = Orion,
@@ -714,7 +719,7 @@ function OrionLib:MakeWindow(WindowConfig)
 			Font = Enum.Font.GothamBold,
 			TextTransparency = 1
 		})
-
+		
 		blureffect.Enabled = true
 		TweenService:Create(LoadSequenceLogo, TweenInfo.new(.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {ImageTransparency = 0, Position = UDim2.new(0.5, 0, 0.5, 0)}):Play()
 		wait(0.8)
