@@ -197,8 +197,8 @@ _G.Settings = {
   }
 }
 
-local function errorHandler(err)
-    print("Error: " .. tostring(err))
+function errorHandler(err)
+    print("[ ULTIMATE ] • ERROR: " .. tostring(err))
 end
 
 local function main()
@@ -422,7 +422,9 @@ local function main()
 	    end
 	end
 
-    function UpdateEspPlayer()
+    local espConnections = {}
+
+	function UpdateEspPlayer()
 	    if _G.Settings.Configs["Esp Players"] then
 	        local function createEsp(v)
 	            if not v.Character or not v.Character:FindFirstChild("Head") then return end
@@ -484,18 +486,37 @@ local function main()
 	        for _, v in pairs(game.Players:GetPlayers()) do
 	            createEsp(v)
 	        end
-
+	
 	        local connection
 	        connection = game:GetService("RunService").RenderStepped:Connect(function()
-	            for _, v in pairs(game.Players:GetPlayers()) do
-	                updateEsp(v)
-	            end
-	
 	            if not _G.Settings.Configs["Esp Players"] then
 	                connection:Disconnect()
+	                for _, conn in pairs(espConnections) do
+	                    conn:Disconnect()
+	                end
+	                espConnections = {}
+	
+	                for _, v in pairs(game.Players:GetPlayers()) do
+	                    if v.Character and v.Character:FindFirstChild("Head") and v.Character.Head:FindFirstChild('NameEsp'..v.Name) then
+	                        pcall(function()
+	                            v.Character.Head:FindFirstChild('NameEsp'..v.Name):Destroy()
+	                        end)
+	                    end
+	                end
+	            else
+	                for _, v in pairs(game.Players:GetPlayers()) do
+	                    updateEsp(v)
+	                end
 	            end
 	        end)
+	
+	        table.insert(espConnections, connection)
 	    else
+	        for _, conn in pairs(espConnections) do
+	            conn:Disconnect()
+	        end
+	        espConnections = {}
+	
 	        for _, v in pairs(game.Players:GetPlayers()) do
 	            if v.Character and v.Character:FindFirstChild("Head") and v.Character.Head:FindFirstChild('NameEsp'..v.Name) then
 	                pcall(function()
@@ -573,19 +594,32 @@ local function main()
 	end
 	
 	function teleportToClosestFruit()
-		if _G.Settings.Configs["Teleport Fruits"] then
-	        pcall(function()
-			    while _G.Settings.Fruits["Teleport Fruits"] do
-			        if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") and game.Players.LocalPlayer.Character.Humanoid.Health > 1 then
-			            local closestFruit = findClosestFruit()
-			            if closestFruit then
-			                game.Players.LocalPlayer.Character:MoveTo(closestFruit.Handle.Position)
-			            end
-			        end
-			        wait(1)
-			    end
-			end)
-		end
+	    if _G.Settings.Fruits["Teleport Fruits"] then
+	        while true do
+	            pcall(function()
+	                if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") and game.Players.LocalPlayer.Character.Humanoid.Health > 1 then
+	                    local closestFruit = nil
+	                    local closestDistance = math.huge
+	                    local playerPosition = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+	                
+	                    for _, v in pairs(game.Workspace:GetChildren()) do
+	                        if string.find(v.Name, "Fruit") and v:FindFirstChild("Handle") then
+	                            local distance = (v.Handle.Position - playerPosition).Magnitude
+	                            if distance < closestDistance then
+	                                closestDistance = distance
+	                                closestFruit = v
+	                            end
+	                        end
+	                    end
+	                
+	                    if closestFruit then
+	                        game.Players.LocalPlayer.Character:MoveTo(closestFruit.Handle.Position)
+	                    end
+	                end
+	            end)
+	            wait(1)
+	        end
+	    end
 	end
 
     function NoClip(Config)
@@ -3357,14 +3391,3 @@ local function main()
 end
 
 xpcall(main, errorHandler)
-
-local function onExit()
-    local success, err = pcall(function()
-    end)
-
-    if not success then
-        print("Error on exit: " .. tostring(err))
-    end
-end
-
-game:BindToClose(onExit)
